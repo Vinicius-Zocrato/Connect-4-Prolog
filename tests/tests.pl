@@ -162,6 +162,7 @@ test(horizontal_2_to_5) :-
 
 % TEST 1: Board complètement vide, toutes les colonnes sont valides (1 à 7)
 % Résultat attendu: ValidColumns = [1,2,3,4,5,6,7]
+test(every_case_is_empty) :-
 Board = [
   ['e','e','e','e','e','e'],
   ['e','e','e','e','e','e'],
@@ -171,10 +172,12 @@ Board = [
   ['e','e','e','e','e','e'],
   ['e','e','e','e','e','e']
 ],
-moves(Board, Valid).
+moves(Board, Valid),
+Valid == [1,2,3,4,5,6,7].
 
 % TEST 2: Board complètement plein, aucune colonne valide
 % Résultat attendu: ValidColumns = []
+test(every_case_is_taken) :-
 Board = [
   ['x','o','x','o','x','o'],
   ['o','x','o','x','o','x'],
@@ -184,11 +187,13 @@ Board = [
   ['o','x','o','x','o','x'],
   ['x','o','x','o','x','o']
 ],
-moves(Board, Valid).
+moves(Board, Valid),
+Valid == [].
 
 % TEST 3: Certaines colonnes pleines, d’autres vides ou partiellement remplies
 % Colonnes 3 et 7 pleines, colonne 6 presque pleine (1 case vide)
 % Résultat attendu: ValidColumns = [1,2,4,5,6]
+test(some_column_are_taken) :-
 Board = [
   ['e','e','e','e','e','e'],   
   ['x','x','o','e','e','e'], 
@@ -198,10 +203,12 @@ Board = [
   ['x','x','x','x','x','e'],    
   ['o','o','o','o','o','o']    
 ],
-moves(Board, Valid).
+moves(Board, Valid),
+Valid == [1,2,4,5,6].
 
 % TEST 4: Board avec une seule colonne non pleine (colonne 6)
 % Résultat attendu: ValidColumns = [6]
+test(one_column_available) :-
 Board = [
   ['x','x','x','x','x','x'],
   ['x','x','x','x','x','x'],
@@ -211,11 +218,13 @@ Board = [
   ['e','e','e','e','e','e'],
   ['x','x','x','x','x','x']
 ],
-moves(Board, Valid).
+moves(Board, Valid),
+Valid== [6].
 
 % TEST 5: Colonnes alternées pleines et vides
 % Colonnes 1,3,5,7 vides ; colonnes 2,4,6 pleines
 % Résultat attendu: ValidColumns = [1,3,5,7]
+test(alternate_column) :-
 Board = [
   ['e','e','e','e','e','e'], 
   ['x','x','x','x','x','x'],    
@@ -225,6 +234,7 @@ Board = [
   ['x','x','x','x','x','x'],  
   ['e','e','e','e','e','e']    
 ],
-moves(Board, Valid).
+moves(Board, Valid),
+Valid == [1,3,5,7].
 
 :- end_tests(connect4).
