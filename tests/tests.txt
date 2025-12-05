@@ -50,10 +50,69 @@ win([['e','e','e','e','e','e'], ['x','x','x','x','x','e'], ['e','e','e','e','e',
 win([['e','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'o').
 
 % ============================================
-% TESTS POUR moves(Board, ValidColumns) - Connect 4
+% TESTS POUR moves(Board, ValidColumns)
 % ============================================
+% Format: Board = liste de 7 colonnes, chaque colonne = liste de 6 cases (bottom first)
+% Copier-coller chaque ligne dans la console Prolog
 
-% TEST 1: Aucune case vide 
-% Board: Col1=[x,x,x,x,e,e], Col2-7=[e,e,e,e,e,e]
-% Résultat attendu: true
-win([['x','x','x','x','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+% TEST 1: Board complètement vide, toutes les colonnes sont valides (1 à 7)
+% Résultat attendu: ValidColumns = [1,2,3,4,5,6,7]
+moves([
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e'],
+  ['e','e','e','e','e','e']
+], ValidColumns), write(ValidColumns).
+
+% TEST 2: Board complètement plein, aucune colonne valide
+% Résultat attendu: ValidColumns = []
+moves([
+  ['x','o','x','o','x','o'],
+  ['o','x','o','x','o','x'],
+  ['x','o','x','o','x','o'],
+  ['o','x','o','x','o','x'],
+  ['x','o','x','o','x','o'],
+  ['o','x','o','x','o','x'],
+  ['x','o','x','o','x','o']
+], ValidColumns), write(ValidColumns).
+
+% TEST 3: Certaines colonnes pleines, d’autres vides ou partiellement remplies
+% Colonnes 3 et 7 pleines, colonne 6 presque pleine (1 case vide)
+% Résultat attendu: ValidColumns = [1,2,4,5,6]
+moves([
+  ['e','e','e','e','e','e'],    % colonne 1 vide
+  ['x','x','o','e','e','e'],    % colonne 2 partiellement remplie
+  ['x','o','o','x','o','x'],    % colonne 3 pleine
+  ['e','e','e','e','e','e'],    % colonne 4 vide
+  ['e','e','e','e','e','e'],    % colonne 5 vide
+  ['x','x','x','x','x','e'],    % colonne 6 presque pleine
+  ['o','o','o','o','o','o']     % colonne 7 pleine
+], ValidColumns), write(ValidColumns).
+
+% TEST 4: Board avec une seule colonne non pleine (colonne 6)
+% Résultat attendu: ValidColumns = [6]
+moves([
+  ['x','x','x','x','x','x'],
+  ['x','x','x','x','x','x'],
+  ['x','x','x','x','x','x'],
+  ['x','x','x','x','x','x'],
+  ['x','x','x','x','x','x'],
+  ['e','e','e','e','e','e'],
+  ['x','x','x','x','x','x']
+], ValidColumns), write(ValidColumns).
+
+% TEST 5: Colonnes alternées pleines et vides
+% Colonnes 1,3,5,7 vides ; colonnes 2,4,6 pleines
+% Résultat attendu: ValidColumns = [1,3,5,7]
+moves([
+  ['e','e','e','e','e','e'],    % 1 vide
+  ['x','x','x','x','x','x'],    % 2 pleine
+  ['e','e','e','e','e','e'],    % 3 vide
+  ['x','x','x','x','x','x'],    % 4 pleine
+  ['e','e','e','e','e','e'],    % 5 vide
+  ['x','x','x','x','x','x'],    % 6 pleine
+  ['e','e','e','e','e','e']     % 7 vide
+], ValidColumns), write(ValidColumns).
