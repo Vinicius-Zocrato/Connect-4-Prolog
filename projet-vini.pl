@@ -143,9 +143,6 @@ goodbye :-
     !,
     run
     . 
-    
-height(Column, Height) :-
-    s
 
 read_play_again(V) :-
     nl,
@@ -239,7 +236,6 @@ square([_,_,_,_,_,_,M,_,_],7,M).
 square([_,_,_,_,_,_,_,M,_],8,M).
 square([_,_,_,_,_,_,_,_,M],9,M).
 
-
 %.......................................
 % win
 %.......................................
@@ -296,23 +292,21 @@ win(Board, M) :-
     get_item(Board, C3, Col3), get_item(Col3, R3, M),
     get_item(Board, C4, Col4), get_item(Col4, R4, M).
 
-
 %.......................................
 % move
 %.......................................
-% moves(+Board, -ListOfValidColumns)
-moves(Board, ValidColumns) :-
-    findall(ColNum, 
-        (between(1,7,ColNum), column_not_full(Board, ColNum)), 
-        ValidColumns).
+% applies a move on the given board
+% (put mark M in square S on board B and return the resulting board B2)
+%
 
-% column_not_full(+Board, +ColNum)
-% True si la colonne ColNum contient au moins un 'e' (case vide)
-column_not_full(Board, ColNum) :-
-    nth1(ColNum, Board, Column),
-    member('e', Column).
-
-
+move(B,S,M,B2) :-
+    set_item(B,S,M,B2)
+    .
+%.......................................
+% game_over
+%.......................................
+% determines when the game is over
+%
 game_over(P, B) :-
     game_over2(P, B)
     .
