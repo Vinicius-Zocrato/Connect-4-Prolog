@@ -229,6 +229,14 @@ play(P) :-
 %.......................................
 % The mark in a square(N) corresponds to an item in a list, as follows:
 
+height([X|_], 0) :-
+    blank_mark(X).
+height([], 0).
+height([X|Column], NumPawns) :-
+    not(blank_mark(X)),
+    height(Column, NumPawns2),
+    NumPawns is NumPawns2 + 1.
+
 square(B,Move,M):-
     nth1(Move, B, Column),
     height(Column, Height),
