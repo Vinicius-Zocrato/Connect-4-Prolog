@@ -1,0 +1,50 @@
+% ============================================
+% TESTS POUR win(Board, M) - Connect 4
+% ============================================
+% Format: Board = liste de 7 colonnes, chaque colonne = liste de 6 cases (bottom first)
+% Copier-coller chaque ligne dans la console Prolog
+
+% TEST 1: Victoire verticale (4 'x' en colonne 1)
+% Board: Col1=[x,x,x,x,e,e], Col2-7=[e,e,e,e,e,e]
+% Résultat attendu: true
+win([['x','x','x','x','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 2: Pas de victoire (3 'x' seulement en colonne 1)
+% Résultat attendu: false
+win([['x','x','x','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 3: Victoire horizontale ligne 1 (4 'o' en bas)
+% Board: chaque colonne commence par 'o' à la position 1
+% Résultat attendu: true
+win([['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'o').
+
+% TEST 4: Victoire horizontale ligne 3 (4 'x' à mi-hauteur)
+% Résultat attendu: true
+win([['e','e','x','e','e','e'], ['e','e','x','e','e','e'], ['e','e','x','e','e','e'], ['e','e','x','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 5: Diagonale montant à droite (↗) - 4 'x'
+% (col1,row1)='x', (col2,row2)='x', (col3,row3)='x', (col4,row4)='x'
+% Résultat attendu: true
+win([['x','e','e','e','e','e'], ['e','x','e','e','e','e'], ['e','e','x','e','e','e'], ['e','e','e','x','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 6: Diagonale descendant à droite (↘) - 4 'o'
+% (col1,row6)='o', (col2,row5)='o', (col3,row4)='o', (col4,row3)='o'
+% Résultat attendu: true
+win([['e','e','e','o','e','e'], ['e','e','o','e','e','e'], ['e','o','e','e','e','e'], ['o','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'o').
+
+% TEST 7: Pas de victoire (board vide)
+% Résultat attendu: false
+win([['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 8: Pas de victoire (4 en ligne mais pas consécutive)
+% Résultat attendu: false
+win([['x','e','e','e','e','e'], ['x','e','e','e','e','e'], ['e','e','e','e','e','e'], ['x','e','e','e','e','e'], ['x','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 9: Victoire avec pièces supplémentaires (plus de 4 alignées)
+% 5 'x' verticaux en colonne 2
+% Résultat attendu: true
+win([['e','e','e','e','e','e'], ['x','x','x','x','x','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
+
+% TEST 10: Victoire horizontale colonnes 2-5
+% Résultat attendu: true
+win([['e','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'o').
