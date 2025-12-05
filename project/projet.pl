@@ -60,6 +60,7 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 %%%     IMPORTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 :- include('win.pl').
+:- include('moves.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS

@@ -56,7 +56,11 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 
 */
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%     IMPORTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+:- include('win.pl').
+:- include('moves.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS
@@ -144,8 +148,13 @@ goodbye :-
     run
     . 
     
-height(Column, Height) :-
-    s
+height([X|_], 0) :-
+    blank_mark(X).
+height([], 0).
+height([X|Column], NumPawns) :-
+    not(blank_mark(X)),
+    height(Column, NumPawns2),
+    NumPawns is NumPawns2 + 1.
 
 read_play_again(V) :-
     nl,
@@ -246,32 +255,6 @@ square([_,_,_,_,_,_,_,_,M],9,M).
 % Players win by having their mark in one of the following square configurations:
 %
 
-win([M,M,M, _,_,_, _,_,_],M).
-win([_,_,_, M,M,M, _,_,_],M).
-win([_,_,_, _,_,_, M,M,M],M).
-win([M,_,_, M,_,_, M,_,_],M).
-win([_,M,_, _,M,_, _,M,_],M).
-win([_,_,M, _,_,M, _,_,M],M).
-win([M,_,_, _,M,_, _,_,M],M).
-win([_,_,M, _,M,_, M,_,_],M).
-
-
-%.......................................
-% move
-%.......................................
-% moves(+Board, -ListOfValidColumns)
-moves(Board, ValidColumns) :-
-    findall(ColNum, 
-        (between(1,7,ColNum), column_not_full(Board, ColNum)), 
-        ValidColumns).
-
-% column_not_full(+Board, +ColNum)
-% True si la colonne ColNum contient au moins un 'e' (case vide)
-column_not_full(Board, ColNum) :-
-    nth1(ColNum, Board, Column),
-    member('e', Column).
-
-
 game_over(P, B) :-
     game_over2(P, B)
     .
@@ -340,7 +323,7 @@ make_move2(computer, P, B, B2) :-
     write(S),
     write('.')
     .
-    
+
 %.......................................
 % utility
 %.......................................
