@@ -144,8 +144,13 @@ goodbye :-
     run
     . 
     
-height(Column, Height) :-
-    s
+height([X|_], 0) :-
+    blank_mark(X).
+height([], 0).
+height([X|Column], NumPawns) :-
+    not(blank_mark(X)),
+    height(Column, NumPawns2),
+    NumPawns is NumPawns2 + 1.
 
 read_play_again(V) :-
     nl,
