@@ -48,3 +48,12 @@ win([['e','e','e','e','e','e'], ['x','x','x','x','x','e'], ['e','e','e','e','e',
 % TEST 10: Victoire horizontale colonnes 2-5
 % Résultat attendu: true
 win([['e','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['o','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'o').
+
+% ============================================
+% TESTS POUR moves(Board, ValidColumns) - Connect 4
+% ============================================
+
+% TEST 1: Aucune case vide 
+% Board: Col1=[x,x,x,x,e,e], Col2-7=[e,e,e,e,e,e]
+% Résultat attendu: true
+win([['x','x','x','x','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e'], ['e','e','e','e','e','e']], 'x').
