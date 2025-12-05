@@ -1,0 +1,22 @@
+name: Prolog Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install SWI-Prolog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y swi-prolog
+
+      - name: Run Prolog tests
+        run: |
+          swipl -q -t run_tests tests/tests.pl
