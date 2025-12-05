@@ -239,8 +239,9 @@ height([X|Column], NumPawns) :-
 
 square(B,Move,M):-
     nth1(Move, B, Column),
-    height(Column, Height),
-    nth1(Height, Column, M).
+    height(Column, Height), 
+    Index is Height + 1, %% first empty position in the column
+    nth1(Index, Column, M).
 
 %.......................................
 % win
