@@ -382,22 +382,6 @@ make_move2(computer, P, B, B2) :-
     write('.')
     .
 
-
-%.......................................
-% moves
-%.......................................
-% retrieves a list of available moves (empty squares) on a board.
-%
-
-moves(B,L) :-
-    not(win(B,x)),                %%% if either player already won, then there are no available moves
-    not(win(B,o)),
-    blank_mark(E),
-    findall(N, square(B,N,E), L), 
-    L \= []
-    .
-
-
 %.......................................
 % utility
 %.......................................
