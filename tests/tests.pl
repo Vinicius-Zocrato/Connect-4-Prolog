@@ -238,3 +238,23 @@ moves(Board, Valid),
 Valid == [1,3,5,7].
 
 :- end_tests(connect4).
+
+%==========
+% TEST display
+%==========
+
+% TEST 1: mappe le board pour le lire par lignes
+test(board_mapping) :-
+    
+Board = [
+  ['l','e','e','e','e','f'],
+  ['a','e','e','e','e','i'],
+  ['s','e','e','e','e','r'],
+  ['t','e','e','e','e','s'],
+  ['e','e','e','e','e','t'],
+  ['l','e','e','e','e','e'],
+  ['i','e','e','e','e','l']
+],
+moves(Board, Valid),
+Valid == [['f','i','r','s','t','e','l'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['l','a','s','t','e','l','i']].
+
