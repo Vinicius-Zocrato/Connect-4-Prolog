@@ -1,4 +1,4 @@
-randomAI(Board, Mark, Move) :-
+randomAI(Board, Move) :-
     moves(Board, ValidColumns),
     length(ValidColumns, Len),
     Len > 0,

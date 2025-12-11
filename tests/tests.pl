@@ -274,13 +274,13 @@ Board = [
   ['x','x','x','x','x','x'],  
   ['e','e','e','e','e','e']    
 ],
-randomAI(Board, 'x', Move1),
-randomAI(Board, 'o', Move2),
-randomAI(Board, 'x', Move3),
-randomAI(Board, 'o', Move4),
-    
-member(Move1, [0,2,4,6]),
-member(Move2, [0,2,4,6]),
-member(Move3, [0,2,4,6]),
-member(Move4, [0,2,4,6]).
+randomAI(Board, Move1),
+randomAI(Board, Move2),
+randomAI(Board, Move3),
+randomAI(Board, Move4),
+
+(Move1 == 1; Move1 == 3; Move1 == 5; Move1 == 7),
+(Move2 == 1; Move2 == 3; Move2 == 5; Move2 == 7),
+(Move3 == 1; Move3 == 3; Move3 == 5; Move3 == 7),
+(Move4 == 1; Move4 == 3; Move4 == 5; Move4 == 7).
 
