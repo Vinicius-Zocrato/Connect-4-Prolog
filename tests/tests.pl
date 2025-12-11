@@ -262,7 +262,6 @@ Valid == [['f','i','r','s','t','e','l'],['e','e','e','e','e','e','e'],['e','e','
 % TEST ia
 %==========
 
-% TEST 1: mappe le board pour le lire par lignes
 test(randomAI) :-
     
 Board = [
@@ -283,4 +282,30 @@ randomAI(Board, Move4),
 (Move2 == 1; Move2 == 3; Move2 == 5; Move2 == 7),
 (Move3 == 1; Move3 == 3; Move3 == 5; Move3 == 7),
 (Move4 == 1; Move4 == 3; Move4 == 5; Move4 == 7).
+
+%==========
+% TEST move
+%==========
+
+test(move) :-
+    
+Board = [
+  ['e','e','e','e','e','e'], 
+  ['x','x','x','x','x','x'],    
+  ['e','e','e','e','e','e'],   
+  ['x','x','x','x','x','x'],   
+  ['e','e','e','e','e','e'],  
+  ['x','x','x','x','e','e'],  
+  ['e','e','e','e','e','e']    
+],
+move(Board, 6, 'o', NewBoard1),
+NewBoard1 == [
+  ['e','e','e','e','e','e'], 
+  ['x','x','x','x','x','x'],    
+  ['e','e','e','e','e','e'],   
+  ['x','x','x','x','x','x'],   
+  ['e','e','e','e','e','e'],  
+  ['x','x','x','x','o','e'],  
+  ['e','e','e','e','e','e']    
+].
 

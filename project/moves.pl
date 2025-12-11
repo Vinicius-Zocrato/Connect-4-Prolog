@@ -78,9 +78,10 @@ square(B,Move,M):-
 
 move(B,S,M,B2) :-
     nth1(S, B, Column),
-    copy_term(Column, L2),
     height(Column, Height),
-    set_item(Column,Height,M,L2).
+    NewHeight is Height + 1,
+    set_item(Column,NewHeight,M,L2),
+    set_item(B,S,L2,B2).
 
 %.......................................
 % set_item
