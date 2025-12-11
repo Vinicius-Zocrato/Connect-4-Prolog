@@ -56,6 +56,14 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 
 */
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%     IMPORTS MODULES EXTERNES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:- use_module("projet_agnes.pl").
+:- use_module("projet_imane.pl").
+:- use_module("projet_laurent.pl").
+:- use_module("projet_vini.pl").
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
