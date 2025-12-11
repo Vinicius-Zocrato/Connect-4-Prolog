@@ -9,8 +9,11 @@ total_cells([H|Q], Total) :-
     total_cells(Q, NewTotal),
     Total is NewTotal+N.
 
-swapBoard(_,_, 0).
-swapBoard(ComputeBoard, ReadBoard, TotalNbOfCell) :-
+swapBoard(ComputeBoard,ReadBoard):-
+    total_cells(ComputeBoard, TotalNbOfCell),
+    swapBoard2(ComputeBoard, ReadBoard, TotalNbOfCell).
+swapBoard2(_,_, 0).
+swapBoard2(ComputeBoard, ReadBoard, TotalNbOfCell) :-
     LineNb is (TotalNbOfCell-1) div 7,
     ColNb is (TotalNbOfCell-1) mod 7,
     cellByCoord(ComputeBoard, LineNb, ColNb, Cell),
@@ -19,12 +22,12 @@ swapBoard(ComputeBoard, ReadBoard, TotalNbOfCell) :-
     length(Line,7),
     length(ReadBoard,6),
     NewTotalNbOfCell is TotalNbOfCell-1,
-    swapBoard(ComputeBoard, ReadBoard, NewTotalNbOfCell).  
+    swapBoard2(ComputeBoard, ReadBoard, NewTotalNbOfCell).  
 
 displayBoard():-
     board(Board),
-    total_cells(Board, TotalNbOfCell),
-    swapBoard(ComputeBoard, ReadBoard, TotalNbOfCell),
+    swapBoard(ComputeBoard, ReadBoard),
+    nl,
     displayLines(Board).
 
 display([]):- nl.

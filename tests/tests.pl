@@ -255,6 +255,32 @@ Board = [
   ['l','e','e','e','e','e'],
   ['i','e','e','e','e','l']
 ],
-moves(Board, Valid),
+swapBoard(Board, Valid),
 Valid == [['f','i','r','s','t','e','l'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['e','e','e','e','e','e','e'],['l','a','s','t','e','l','i']].
+
+%==========
+% TEST ia
+%==========
+
+% TEST 1: mappe le board pour le lire par lignes
+test(randomAI) :-
+    
+Board = [
+  ['e','e','e','e','e','e'], 
+  ['x','x','x','x','x','x'],    
+  ['e','e','e','e','e','e'],   
+  ['x','x','x','x','x','x'],   
+  ['e','e','e','e','e','e'],  
+  ['x','x','x','x','x','x'],  
+  ['e','e','e','e','e','e']    
+],
+randomAI(Board, 'x', Move1),
+randomAI(Board, 'o', Move2),
+randomAI(Board, 'x', Move3),
+randomAI(Board, 'o', Move4),
+    
+member(Move1, [0,2,4,6]),
+member(Move2, [0,2,4,6]),
+member(Move3, [0,2,4,6]),
+member(Move4, [0,2,4,6]).
 

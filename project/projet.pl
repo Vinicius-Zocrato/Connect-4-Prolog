@@ -63,6 +63,9 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('moves.pl').
 :- include('display.pl').
 :- include('minmaxAI.pl').
+:- include('randomAI.pl').
+:- include('lists.pl').
+:- include('random.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS
@@ -258,16 +261,6 @@ square([_,_,_,_,_,_,_,_,M],9,M).
 %
 
 
-%.......................................
-% move
-%.......................................
-% moves(+Board, -ListOfValidColumns)
-moves(Board, ValidColumns) :-
-    findall(ColNum, 
-        (between(1,7,ColNum), column_not_full(Board, ColNum)), 
-        ValidColumns).
-
-% column_not_full(+Board, +ColNum)
 % True si la colonne ColNum contient au moins un 'e' (case vide)
 column_not_full(Board, ColNum) :-
     nth1(ColNum, Board, Column),
@@ -286,61 +279,6 @@ game_over2(P, B) :-
 game_over2(P, B) :-
     blank_mark(E),
     not(square(B,S,E))     %%% game is over if opponent wins
-    .
-
-
-%.......................................
-% make_move
-%.......................................
-% requests next move from human/computer, 
-% then applies that move to the given board
-%
-
-make_move(P, B) :-
-    player(P, Type),
-
-    make_move2(Type, P, B, B2),
-
-    retract( board(_) ),
-    asserta( board(B2) )
-    .
-
-make_move2(human, P, B, B2) :-
-    nl,
-    nl,
-    write('Player '),
-    write(P),
-    write(' move? '),
-    read(S),
-
-    blank_mark(E),
-    square(B, S, E),
-    player_mark(P, M),
-    move(B, S, M, B2), !
-    .
-
-make_move2(human, P, B, B2) :-
-    nl,
-    nl,
-    write('Please select a numbered square.'),
-    make_move2(human,P,B,B2)
-    .
-
-make_move2(computer, P, B, B2) :-
-    nl,
-    nl,
-    write('Computer is thinking about next move...'),
-    player_mark(P, M),
-    minimax(0, B, M, S, U),
-    move(B,S,M,B2),
-
-    nl,
-    nl,
-    write('Computer places '),
-    write(M),
-    write(' in square '),
-    write(S),
-    write('.')
     .
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -437,149 +375,6 @@ output_value(D,S,U) :-
 output_value(D,S,U) :- 
     true
     .
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% PSEUDO-RANDOM NUMBERS 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%.......................................
-% random_seed
-%.......................................
-% Initialize the random number generator...
-% If no seed is provided, use the current time
-%
-
-random_seed :-
-    random_seed(_),
-    !
-    .
-
-random_seed(N) :-
-    nonvar(N),
-% Do nothing, SWI-Prolog does not support seeding the random number generator
-    !
-    .
-
-random_seed(N) :-
-    var(N),
-% Do nothing, SWI-Prolog does not support seeding the random number generator
-    !
-    .
-
-/*****************************************
- OTHER COMPILER SUPPORT
-******************************************
-
-arity_prolog___random_seed(N) :-
-    nonvar(N),
-    randomize(N), 
-    !
-    .
-
-arity_prolog___random_seed(N) :-
-    var(N),
-    time(time(Hour,Minute,Second,Tick)),
-    N is ( (Hour+1) * (Minute+1) * (Second+1) * (Tick+1)),
-    randomize(N), 
-    !
-    .
-
-******************************************/
-
-
-
-%.......................................
-% random_int_1n
-%.......................................
-% returns a random integer from 1 to N
-%
-random_int_1n(N, V) :-
-    V is random(N) + 1,
-    !
-    .
-
-/*****************************************
- OTHER COMPILER SUPPORT
-******************************************
-
-arity_prolog___random_int_1n(N, V) :-
-    R is random,
-    V2 is (R * N) - 0.5,           
-    float_text(V2,V3,fixed(0)),
-    int_text(V4,V3),
-    V is V4 + 1,
-    !
-    .
-
-******************************************/
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% LIST PROCESSING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-member([V|T], V).
-member([_|T], V) :- member(T,V).
-
-append([], L, L).
-append([H|T1], L2, [H|T3]) :- append(T1, L2, T3).
-
-
-%.......................................
-% set_item
-%.......................................
-% Given a list L, replace the item at position N with V
-% return the new list in list L2
-%
-
-set_item(L, N, V, L2) :-
-    set_item2(L, N, V, 1, L2)
-        .
-
-set_item2( [], N, V, A, L2) :- 
-    N == -1, 
-    L2 = []
-    .
-
-set_item2( [_|T1], N, V, A, [V|T2] ) :- 
-    A = N,
-    A1 is N + 1,
-    set_item2( T1, -1, V, A1, T2 )
-    .
-
-set_item2( [H|T1], N, V, A, [H|T2] ) :- 
-    A1 is A + 1, 
-    set_item2( T1, N, V, A1, T2 )
-    .
-
-
-%.......................................
-% get_item
-%.......................................
-% Given a list L, retrieve the item at position N and return it as value V
-%
-
-get_item(L, N, V) :-
-    get_item2(L, N, 1, V)
-    .
-
-get_item2( [], _N, _A, V) :- 
-    V = [], !,
-    fail
-        .
-
-get_item2( [H|_T], N, A, V) :- 
-    A = N,
-    V = H
-    .
-
-get_item2( [_|T], N, A, V) :-
-    A1 is A + 1,
-    get_item2( T, N, A1, V)
-    .
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% End of program

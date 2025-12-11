@@ -28,20 +28,22 @@ make_move2(human, P, B, B2) :-
     make_move2(human,P,B,B2)
     .
 
-make_move2(computer, P, B, B2) :-
+make_move2(computer, Player, Board, B2) :-
     nl,
     nl,
     write('Computer is thinking about next move...'),
-    player_mark(P, M),
-    minimax(0, B, M, S, U),
-    move(B,S,M,B2),
+    player_mark(Player, Mark),
+    %set here the AI you want to use
+    randomAI(Board, Mark, Move),
+    %minimax(0, Board, Mark, Move, U), 
+    move(Board,Move,Mark,B2),
 
     nl,
     nl,
     write('Computer places '),
-    write(M),
-    write(' in square '),
-    write(S),
+    write(Mark),
+    write(' in column '),
+    write(Move),
     write('.')
     .
 
@@ -77,7 +79,8 @@ square(B,Move,M):-
 move(B,S,M,B2) :-
     nth1(S, B, Column),
     copy_term(Column, L2),
-    set_item(Column,S,M,L2).
+    height(Column, Height),
+    set_item(Column,Height,M,L2).
 
 %.......................................
 % set_item
