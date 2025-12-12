@@ -294,12 +294,9 @@ test(blockWinning) :-
     ['e','e','e','e','e','e'],
     ['e','e','e','e','e','e']
     ],
-    write('Testing blockWining AI on empty board: '), 
-    nl,
     blockWining(EmptyBoard, 'x', Move1),
-    write(Move1), nl,
-    (Move1 == 1; Move1 == 2; Move1 == 3; Move1 == 4; Move1 == 5; Move1 == 6; Move1 == 7).
-    /*
+    (Move1 == 1; Move1 == 2; Move1 == 3; Move1 == 4; Move1 == 5; Move1 == 6; Move1 == 7),
+    
     WinningBoard = [
     ['x','o','e','e','e','e'],
     ['x','x','e','e','e','e'],
@@ -311,7 +308,7 @@ test(blockWinning) :-
     ],
     blockWining(WinningBoard, 'x', Move2),
 
-    %Move2 == 4,
+    Move2 == 4,
 
     LoosingBoard = [
     ['x','o','e','e','e','e'],
@@ -324,7 +321,7 @@ test(blockWinning) :-
     ],
     blockWining(LoosingBoard, 'o', Move3),
 
-    %Move3 == 4.*/
+    Move3 == 4.
 
 %==========
 % TEST move

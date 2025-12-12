@@ -56,9 +56,10 @@ moves(Board, ValidColumns) :-
 % column_not_full(+Board, +ColNum)
 column_not_full(Board, ColNum) :-
     nth1(ColNum, Board, Column),
-    write('Checking column '), write(Column), nl,
+    %write('Checking column '), write(Column), nl,
     blank_mark(H),
-   	member(H, Column). 
+    %write('Blank mark is '), write(H), nl,
+   	member(Column, H). 
 
 %.......................................
 % square
