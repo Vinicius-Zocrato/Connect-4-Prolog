@@ -56,7 +56,9 @@ moves(Board, ValidColumns) :-
 % column_not_full(+Board, +ColNum)
 column_not_full(Board, ColNum) :-
     nth1(ColNum, Board, Column),
-   	memberchk('e', Column). 
+    write('Checking column '), write(Column), nl,
+    blank_mark(H),
+   	member(H, Column). 
 
 
 % square(+B,+Move,+M) 
@@ -82,33 +84,3 @@ move(B,S,M,B2) :-
     NewHeight is Height + 1,
     set_item(Column,NewHeight,M,L2),
     set_item(B,S,L2,B2).
-
-%.......................................
-% set_item
-%.......................................
-% Given a list L, replace the item at position N with V
-% return the new list in list L2
-%
-
-set_item(L, N, V, L2) :-
-    set_item2(L, N, V, 1, L2)
-        .
-
-set_item2( [], N, V, A, L2) :- 
-    N == -1, 
-    L2 = []
-    .
-
-set_item2( [_|T1], N, V, A, [V|T2] ) :- 
-    A = N,
-    A1 is N + 1,
-    set_item2( T1, -1, V, A1, T2 )
-    .
-
-set_item2( [H|T1], N, V, A, [H|T2] ) :- 
-    A1 is A + 1, 
-    set_item2( T1, N, V, A1, T2 )
-    .
-
-
-

@@ -1,6 +1,6 @@
 :- begin_tests(connect4).
 
-:- consult('../project/projet.pl').
+%:- consult('../project/projet.pl').
 
 %==========
 % TEST win
@@ -264,24 +264,67 @@ Valid == [['f','i','r','s','t','e','l'],['e','e','e','e','e','e','e'],['e','e','
 
 test(randomAI) :-
     
-Board = [
-  ['e','e','e','e','e','e'], 
-  ['x','x','x','x','x','x'],    
-  ['e','e','e','e','e','e'],   
-  ['x','x','x','x','x','x'],   
-  ['e','e','e','e','e','e'],  
-  ['x','x','x','x','x','x'],  
-  ['e','e','e','e','e','e']    
-],
-randomAI(Board, Move1),
-randomAI(Board, Move2),
-randomAI(Board, Move3),
-randomAI(Board, Move4),
+    Board = [
+    ['e','e','e','e','e','e'], 
+    ['x','x','x','x','x','x'],    
+    ['e','e','e','e','e','e'],   
+    ['x','x','x','x','x','x'],   
+    ['e','e','e','e','e','e'],  
+    ['x','x','x','x','x','x'],  
+    ['e','e','e','e','e','e']    
+    ],
+    randomAI(Board, Move1),
+    randomAI(Board, Move2),
+    randomAI(Board, Move3),
+    randomAI(Board, Move4),
 
-(Move1 == 1; Move1 == 3; Move1 == 5; Move1 == 7),
-(Move2 == 1; Move2 == 3; Move2 == 5; Move2 == 7),
-(Move3 == 1; Move3 == 3; Move3 == 5; Move3 == 7),
-(Move4 == 1; Move4 == 3; Move4 == 5; Move4 == 7).
+    (Move1 == 1; Move1 == 3; Move1 == 5; Move1 == 7),
+    (Move2 == 1; Move2 == 3; Move2 == 5; Move2 == 7),
+    (Move3 == 1; Move3 == 3; Move3 == 5; Move3 == 7),
+    (Move4 == 1; Move4 == 3; Move4 == 5; Move4 == 7).
+
+test(blockWinning) :-
+    
+    EmptyBoard = [
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e']
+    ],
+    write('Testing blockWining AI on empty board: '), 
+    nl,
+    blockWining(EmptyBoard, 'x', Move1),
+    write(Move1), nl,
+    (Move1 == 1; Move1 == 2; Move1 == 3; Move1 == 4; Move1 == 5; Move1 == 6; Move1 == 7).
+    /*
+    WinningBoard = [
+    ['x','o','e','e','e','e'],
+    ['x','x','e','e','e','e'],
+    ['x','x','x','o','e','e'],
+    ['o','x','o','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e']
+    ],
+    blockWining(WinningBoard, 'x', Move2),
+
+    %Move2 == 4,
+
+    LoosingBoard = [
+    ['x','o','e','e','e','e'],
+    ['x','x','e','e','e','e'],
+    ['x','x','x','o','e','e'],
+    ['o','x','o','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e'],
+    ['e','e','e','e','e','e']
+    ],
+    blockWining(LoosingBoard, 'o', Move3),
+
+    %Move3 == 4.*/
 
 %==========
 % TEST move

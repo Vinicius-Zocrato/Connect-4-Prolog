@@ -64,6 +64,7 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('display.pl').
 :- include('minmaxAI.pl').
 :- include('randomAI.pl').
+:- include('blockingWiningAI.pl').
 :- include('lists.pl').
 :- include('random.pl').
 
