@@ -123,9 +123,9 @@ square(B,Move,M):-
 % (put mark M in square S on board B and return the resulting board B2)
 %
 
-move(B,S,M,B2) :-
-    nth1(S, B, Column),
+move(B,Move,Mark,B2) :-
+    nth1(Move, B, Column),
     height(Column, Height),
     NewHeight is Height + 1,
-    set_item(Column,NewHeight,M,L2),
-    set_item(B,S,L2,B2).
+    set_item(Column,NewHeight,Mark,L2),
+    set_item(B,Move,L2,B2).

@@ -286,13 +286,13 @@ test(randomAI) :-
 test(blockWinning) :-
     
     EmptyBoard = [
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e'],
-    ['e','e','e','e','e','e']
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e],
+    [e,e,e,e,e,e]
     ],
     blockWining(EmptyBoard, 'x', Move1),
     (Move1 == 1; Move1 == 2; Move1 == 3; Move1 == 4; Move1 == 5; Move1 == 6; Move1 == 7),
