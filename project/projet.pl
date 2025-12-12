@@ -107,7 +107,7 @@ corner_square(4, 9).
 run :-
     hello,          %%% Display welcome message, initialize game
 
-    play(1),        %%% Play the game starting with player 1
+    play(1, 8),        %%% Play the game starting with player 1
 
     goodbye         %%% Display end of game message
     .
@@ -179,13 +179,65 @@ read_play_again(V) :-
     read_play_again(V)
     .
 
-play(P) :-
+
+read_players :-
+    nl,
+    nl,
+    write('Number of human players? '),
+    read(N),
+    set_players(N)
+    .
+
+set_players(0) :- 
+    asserta( player(1, computer) ),
+    asserta( player(2, computer) ), !
+    .
+
+set_players(1) :-
+    nl,
+    write('Is human playing X or O (X moves first)? '),
+    read(M),
+    human_playing(M), !
+    .
+
+set_players(2) :- 
+    asserta( player(1, human) ),
+    asserta( player(2, human) ), !
+    .
+
+set_players(_) :-
+    nl,
+    write('Please enter 0, 1, or 2.'),
+    read_players
+    .
+
+
+human_playing(M) :- 
+    (M == 'x' ; M == 'X'),
+    asserta( player(1, human) ),
+    asserta( player(2, computer) ), !
+    .
+
+human_playing(M) :- 
+    (M == 'o' ; M == 'O'),
+    asserta( player(1, computer) ),
+    asserta( player(2, human) ), !
+    .
+
+human_playing(_) :-
+    nl,
+    write('Please enter X or O.'),
+    set_players(1)
+    .
+
+
+play(P, LastCol) :-
     board(B), !,
-    displayBoard(), !,
+    displayBoard(LastCol), !,
     not(game_over(P, B)), !,
-    make_move(P, B), !,
+    make_move(P, B, L), !,
     next_player(P, P2), !,
-    play(P2), !.
+    play(P2, L), !.
 
 %.......................................
 % win
