@@ -33,9 +33,17 @@ utility(B,U) :-
 % Save the user the trouble of waiting  for the computer to search the entire minimax tree 
 % by simply selecting a random square.
 
-minimax(D,[E,E,E, E,E,E, E,E,E],M,S,U) :-   
+minimax(D,[
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E], 
+        [E,E,E,E,E,E]
+    ],M,S,U) :-   
     blank_mark(E),
-    random_int_1n(9,S),
+    S is 4,
     !
     .
 

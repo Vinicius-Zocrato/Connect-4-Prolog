@@ -34,8 +34,8 @@ make_move2(computer, Player, Board, B2) :-
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
     %set here the AI you want to use
-    randomAI(Board, Move),
-    %minimax(0, Board, Mark, Move, U), 
+    %randomAI(Board, Move),
+    minimax(0, Board, Mark, Move, U), 
     move(Board,Move,Mark,B2),
 
     nl,
