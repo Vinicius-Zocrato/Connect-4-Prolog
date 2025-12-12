@@ -26,16 +26,26 @@ swapBoard2(ComputeBoard, ReadBoard, TotalNbOfCell) :-
 
 displayBoard():-
     board(Board),
-    swapBoard(ComputeBoard, ReadBoard),
+    swapBoard(Board, ReadBoard),
     nl,
-    displayLines(Board).
+    displayLines(ReadBoard).
 
-display([]):- nl.
+display([]):-
+    write("|"),
+    nl.
+
 display([H|Q]) :-
+    blank_mark(H), 
+    write("| "),
+    display(Q).
+
+display([H|Q]) :-
+    write("|"),
     write(H),
     display(Q).
 
 displayLines([]).
+
 displayLines([H|Q]) :-
     display(H),
     displayLines(Q).
