@@ -67,7 +67,9 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('blockingWiningAI.pl').
 :- include('lists.pl').
 :- include('random.pl').
+:- include('handlePlayers.pl').
 
+:- asserta( allAI([random, blockWinning, minimax]) ).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -176,58 +178,6 @@ read_play_again(V) :-
     write('Please enter Y or N.'),
     read_play_again(V)
     .
-
-
-read_players :-
-    nl,
-    nl,
-    write('Number of human players? '),
-    read(N),
-    set_players(N)
-    .
-
-set_players(0) :- 
-    asserta( player(1, computer) ),
-    asserta( player(2, computer) ), !
-    .
-
-set_players(1) :-
-    nl,
-    write('Is human playing X or O (X moves first)? '),
-    read(M),
-    human_playing(M), !
-    .
-
-set_players(2) :- 
-    asserta( player(1, human) ),
-    asserta( player(2, human) ), !
-    .
-
-set_players(_) :-
-    nl,
-    write('Please enter 0, 1, or 2.'),
-    read_players
-    .
-
-
-human_playing(M) :- 
-    (M == 'x' ; M == 'X'),
-    asserta( player(1, human) ),
-    asserta( player(2, computer) ), !
-    .
-
-human_playing(M) :- 
-    (M == 'o' ; M == 'O'),
-    asserta( player(1, computer) ),
-    asserta( player(2, human) ), !
-    .
-
-human_playing(_) :-
-    nl,
-    write('Please enter X or O.'),
-    set_players(1)
-    .
-
 
 play(P) :-
     board(B), !,

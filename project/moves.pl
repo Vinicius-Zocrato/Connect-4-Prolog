@@ -28,14 +28,12 @@ make_move2(human, P, B, B2) :-
     make_move2(human,P,B,B2)
     .
 
-make_move2(computer, Player, Board, B2) :-
+make_move2(random, Player, Board, B2) :-
     nl,
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
-    %set here the AI you want to use
-    %randomAI(Board, Move),
-    minimax(0, Board, Mark, Move, U), 
+    randomAI(Board, Move),
     move(Board,Move,Mark,B2),
 
     nl,
@@ -44,8 +42,41 @@ make_move2(computer, Player, Board, B2) :-
     write(Mark),
     write(' in column '),
     write(Move),
-    write('.')
-    .
+    write('.').
+
+make_move2(blockWinning, Player, Board, B2) :-
+    nl,
+    nl,
+    write('Computer is thinking about next move...'),
+    player_mark(Player, Mark),
+    blockWining(Board, Mark, Move),
+    move(Board,Move,Mark,B2),
+
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.').
+
+make_move2([minimax, Depth], Player, Board, B2) :-
+    nl,
+    nl,
+    write('Computer is thinking about next move...'),
+    player_mark(Player, Mark),
+    utility(Board,Utility)
+    minimax(Depth,Board,Mark,Move,Utility),
+    move(Board,Move,Mark,B2),
+
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.').
+
 
 % moves(+Board, -ValidColumns)
 moves(Board, ValidColumns) :-
