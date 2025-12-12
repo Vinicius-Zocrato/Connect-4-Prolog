@@ -203,7 +203,7 @@ set_players(2) :-
     asserta( player(2, human) ), !
     .
 
-set_players(N) :-
+set_players(_) :-
     nl,
     write('Please enter 0, 1, or 2.'),
     read_players
@@ -222,7 +222,7 @@ human_playing(M) :-
     asserta( player(2, human) ), !
     .
 
-human_playing(M) :-
+human_playing(_) :-
     nl,
     write('Please enter X or O.'),
     set_players(1)
@@ -235,38 +235,13 @@ play(P) :-
     not(game_over(P, B)), !,
     make_move(P, B), !,
     next_player(P, P2), !,
-    play(P2), !
-    .
-
-
-%.......................................
-% square
-%.......................................
-% The mark in a square(N) corresponds to an item in a list, as follows:
-
-square([M,_,_,_,_,_,_,_,_],1,M).
-square([_,M,_,_,_,_,_,_,_],2,M).
-square([_,_,M,_,_,_,_,_,_],3,M).
-square([_,_,_,M,_,_,_,_,_],4,M).
-square([_,_,_,_,M,_,_,_,_],5,M).
-square([_,_,_,_,_,M,_,_,_],6,M).
-square([_,_,_,_,_,_,M,_,_],7,M).
-square([_,_,_,_,_,_,_,M,_],8,M).
-square([_,_,_,_,_,_,_,_,M],9,M).
-
+    play(P2), !.
 
 %.......................................
 % win
 %.......................................
 % Players win by having their mark in one of the following square configurations:
 %
-
-
-% True si la colonne ColNum contient au moins un 'e' (case vide)
-column_not_full(Board, ColNum) :-
-    nth1(ColNum, Board, Column),
-    member('e', Column).
-
 
 game_over(P, B) :-
     game_over2(P, B)
@@ -312,7 +287,7 @@ output_winner(B) :-
     !
     .
 
-output_winner(B) :-
+output_winner(_) :-
     write('No winner.')
     .
 
@@ -360,7 +335,7 @@ output_square2(S, E) :-
     write(S), !              %%% if square is empty, output the square number
     .
 
-output_square2(S, M) :- 
+output_square2(_, M) :- 
     write(M), !              %%% if square is marked, output the mark
     .
 
@@ -373,7 +348,7 @@ output_value(D,S,U) :-
     write(U), !
     .
 
-output_value(D,S,U) :- 
+output_value(_,_,_) :- 
     true
     .
 

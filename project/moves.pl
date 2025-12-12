@@ -60,7 +60,20 @@ column_not_full(Board, ColNum) :-
     blank_mark(H),
    	member(H, Column). 
 
+%.......................................
+% square
+%.......................................
+% The mark in a square(N) corresponds to an item in a list, as follows:
 
+square([M,_,_,_,_,_,_,_,_],1,M).
+square([_,M,_,_,_,_,_,_,_],2,M).
+square([_,_,M,_,_,_,_,_,_],3,M).
+square([_,_,_,M,_,_,_,_,_],4,M).
+square([_,_,_,_,M,_,_,_,_],5,M).
+square([_,_,_,_,_,M,_,_,_],6,M).
+square([_,_,_,_,_,_,M,_,_],7,M).
+square([_,_,_,_,_,_,_,M,_],8,M).
+square([_,_,_,_,_,_,_,_,M],9,M).
 % square(+B,+Move,+M) 
 % Check if the top element of a column Move is equal to M
 

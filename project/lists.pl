@@ -3,7 +3,7 @@
 %%% LIST PROCESSING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-member([V|T], V).
+member([V|_], V).
 member([_|T], V) :- member(T,V).
 
 append([], L, L).
@@ -21,7 +21,7 @@ set_item(L, N, V, L2) :-
     set_item2(L, N, V, 1, L2)
         .
 
-set_item2( [], N, V, A, L2) :- 
+set_item2( [], N, _, _, L2) :- 
     N == -1, 
     L2 = []
     .
