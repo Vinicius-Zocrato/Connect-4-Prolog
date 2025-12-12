@@ -48,8 +48,10 @@ minimax(D,[
     .
 
 minimax(D,B,M,S,U) :-
+    D < 4,              %%% limit the depth of the search to avoid long computation times
     D2 is D + 1,
     moves(B,L),          %%% get the list of available moves
+    L \= [],             %%% if there are available moves,
     !,
     best(D2,B,M,L,S,U),  %%% recursively determine the best available move
     !
