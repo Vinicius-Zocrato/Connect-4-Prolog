@@ -24,28 +24,41 @@ swapBoard2(ComputeBoard, ReadBoard, TotalNbOfCell) :-
     NewTotalNbOfCell is TotalNbOfCell-1,
     swapBoard2(ComputeBoard, ReadBoard, NewTotalNbOfCell).  
 
-displayBoard():-
+displayBoard(LastCol):-
     board(Board),
     swapBoard(Board, ReadBoard),
     nl,
-    displayLines(ReadBoard).
+    displayLines(ReadBoard, LastCol, Printed).
 
-display([]):-
+display([], _, _, _) :-
     write("|"),
     nl.
 
-display([H|Q]) :-
-    blank_mark(H), 
+display([H|Q], LastCol, D, Printed) :-
+    D2 is D+1,
+    blank_mark(H),
     write("| "),
-    display(Q).
+    display(Q, LastCol, D2, Printed).
 
-display([H|Q]) :-
+display([H|Q], LastCol, D, Printed) :-   % colored cell
+    D2 is D+1,
+    D2 == LastCol,
+    Printed \== 1,
+    write("|\033[0;31m"),
+    write(H),
+    write("\033[0m"),
+    Printed is 1,
+    display(Q, LastCol, D2, Printed).
+
+display([H|Q], LastCol, D, Printed) :-
+    D2 is D+1,
+    (D2 \== LastCol; Printed == 1),
     write("|"),
     write(H),
-    display(Q).
+    display(Q, LastCol, D2, Printed).
 
-displayLines([]).
+displayLines([], _, _).
 
-displayLines([H|Q]) :-
-    display(H),
-    displayLines(Q).
+displayLines([H|Q], LastCol, Printed) :-
+    display(H, LastCol, 0, Printed),
+    displayLines(Q, LastCol, Printed).

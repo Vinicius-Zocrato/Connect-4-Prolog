@@ -1,13 +1,13 @@
-make_move(P, B) :-
+make_move(P, B, Move) :-
     player(P, Type),
 
-    make_move2(Type, P, B, B2),
+    make_move2(Type, P, B, B2, Move),
 
     retract( board(_) ),
     asserta( board(B2) )
     .
 
-make_move2(human, P, B, B2) :-
+make_move2(human, P, B, B2, S) :-
     nl,
     nl,
     write('Player '),
@@ -21,20 +21,19 @@ make_move2(human, P, B, B2) :-
     move(B, S, M, B2), !
     .
 
-make_move2(human, P, B, B2) :-
+make_move2(human, P, B, B2, _) :-
     nl,
     nl,
     write('Please select a numbered square.'),
     make_move2(human,P,B,B2)
     .
 
-make_move2(computer, Player, Board, B2) :-
+make_move2(computer, Player, Board, B2, Move) :-
     nl,
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
     %set here the AI you want to use
-    %randomAI(Board, Move),
     minimax(0, Board, Mark, Move, U), 
     move(Board,Move,Mark,B2),
 
@@ -59,7 +58,7 @@ column_not_full(Board, ColNum) :-
     %write('Checking column '), write(Column), nl,
     blank_mark(H),
     %write('Blank mark is '), write(H), nl,
-   	member(Column, H). 
+   	member(H, Column). 
 
 %.......................................
 % square

@@ -105,7 +105,7 @@ corner_square(4, 9).
 run :-
     hello,          %%% Display welcome message, initialize game
 
-    play(1),        %%% Play the game starting with player 1
+    play(1, 8),        %%% Play the game starting with player 1
 
     goodbye         %%% Display end of game message
     .
@@ -229,13 +229,13 @@ human_playing(_) :-
     .
 
 
-play(P) :-
+play(P, LastCol) :-
     board(B), !,
-    displayBoard(), !,
+    displayBoard(LastCol), !,
     not(game_over(P, B)), !,
-    make_move(P, B), !,
+    make_move(P, B, L), !,
     next_player(P, P2), !,
-    play(P2), !.
+    play(P2, L), !.
 
 %.......................................
 % win
