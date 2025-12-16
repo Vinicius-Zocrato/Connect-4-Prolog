@@ -4,8 +4,9 @@ make_move(P, B, Move) :-
     make_move2(Type, P, B, B2, Move),
 
     retract( board(_) ),
-    asserta( board(B2) )
-    .
+    asserta( board(B2) ),
+    utility(B2, U),
+    print_utility(Type, U).
 
 make_move2(human, P, B, B2, S) :-
     nl,
@@ -42,7 +43,8 @@ make_move2(random, Player, Board, B2, Move) :-
     write(Mark),
     write(' in column '),
     write(Move),
-    write('.').
+    write('.'),
+    nl.
 
 make_move2(blockWinning, Player, Board, B2, Move) :-
     nl,
@@ -66,7 +68,6 @@ make_move2([minimax, Depth], Player, Board, B2, Move) :-
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
     minimax(0, Board,Mark,Move,Utility),
-    write('\n'), write('Utility: '), write(Utility),
     move(Board,Move,Mark,B2),
 
     nl,
@@ -75,7 +76,8 @@ make_move2([minimax, Depth], Player, Board, B2, Move) :-
     write(Mark),
     write(' in column '),
     write(Move),
-    write('.').
+    write('.'),
+    nl.
 
 
 % moves(+Board, -ValidColumns)
@@ -119,3 +121,11 @@ move(B,S,M,B2) :-
     NewHeight is Height + 1,
     set_item(Column,NewHeight,M,L2),
     set_item(B,S,L2,B2).
+
+
+print_utility(Type, U) :-
+    (Type = [minimax, _] -> 
+        (write('Minimax AI utility: '), write(U))
+    ;
+    true
+    ).
