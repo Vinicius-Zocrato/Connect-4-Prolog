@@ -3,12 +3,12 @@
 %.......................................
 % The minimax algorithm always assumes an optimal opponent.
 % For tic-tac-toe, optimal play will always result in a tie, so the algorithm is effectively playing not-to-lose.
-
+utility(B, U) 
 % For the opening move against an optimal player, the best minimax can ever hope for is a tie.
 % So, technically speaking, any opening move is acceptable.
 % Save the user the trouble of waiting  for the computer to search the entire minimax tree 
 % by simply selecting a random square.
-
+utility(B, U) 
 minimax(D,[
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -141,10 +141,10 @@ calculate_score(_, _, _, 'e', 0) :- !.
 calculate_score(B, Column, Row, Mark, Score) :-
     Mark \= 'e',  % seulement pour 'x' ou 'o'
     % 4 directions : horizontal, vertical, diag-down-right, diag-up-right
-    score_direction(B, Column, Row, Mark, 1, 0, S1),      % horizontal
-    score_direction(B, Column, Row, Mark, 0, 1, S2),      % vertical
-    score_direction(B, Column, Row, Mark, 1, 1, S3),      % diag down-right
-    score_direction(B, Column, Row, Mark, 1, -1, S4),     % diag up-right
+    score_direction(B, Column, Row, Mark, 0, 1, S1),      % horizontal
+    score_direction(B, Column, Row, Mark, 1, 0, S2),      % vertical
+    score_direction(B, Column, Row, Mark, 1, -1, S3),      % diag topleft-bottomright
+    score_direction(B, Column, Row, Mark, 1, 1, S4),     % diag bottomleft-topright
     Score is S1 + S2 + S3 + S4
     .
 
@@ -195,7 +195,7 @@ count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
 %.......................................
 
 score_from_count(Total, Score) :-
-    Total >= 3, !, Score is 1000.   % 4 alignés (victoire imminente)
+    Total >= 3, !, Score is 100.   % 4 alignés (victoire imminente)
 
 score_from_count(Total, Score) :-
     Total >= 2, !, Score is 50.     % 3 alignés (très bon)
@@ -220,19 +220,7 @@ utility(B, U) :-
     .
 
 utility(B, U) :-
-    U is 0,
-    between(1, 7, Col),
-    between(1, 6, Row),
-    get_item(B, Col, Column),
-    get_item(Column, Row, V),
-    calculate_score(B, Col, Row, V, U1),
-    % Bonus/malus selon si c'est 'x' ou 'o'
-    (V == 'x' -> U2 is U1 ; V == 'o' -> U2 is -U1 ; U2 is 0),
-    fail  % Force le backtrack pour sommer tous les scores
-    .
-
-utility(B, U) :-
-    % Accumulateur final (alternative : utiliser findall)
+    % somme tous les scores du boad pour donner l'utility
     aggregate_all(sum(ScoreVal), 
         (between(1, 7, Col),
          between(1, 6, Row),

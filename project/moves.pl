@@ -33,7 +33,7 @@ make_move2(random, Player, Board, B2, Move) :-
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
-    randomAI(Board, Move),
+    trace, randomAI(Board, Move),
     move(Board,Move,Mark,B2),
 
     nl,
@@ -44,7 +44,7 @@ make_move2(random, Player, Board, B2, Move) :-
     write(Move),
     write('.').
 
-make_move2(blockWinning, Player, Board, B2) :-
+make_move2(blockWinning, Player, Board, B2, Move) :-
     nl,
     nl,
     write('Computer is thinking about next move...'),
@@ -60,12 +60,12 @@ make_move2(blockWinning, Player, Board, B2) :-
     write(Move),
     write('.').
 
-make_move2([minimax, Depth], Player, Board, B2) :-
+make_move2([minimax, Depth], Player, Board, B2, Move) :-
     nl,
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
-    utility(Board,Utility)
+    utility(Board,Utility),
     minimax(Depth,Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
 
@@ -95,17 +95,7 @@ column_not_full(Board, ColNum) :-
 %.......................................
 % square
 %.......................................
-% The mark in a square(N) corresponds to an item in a list, as follows:
 
-square([M,_,_,_,_,_,_,_,_],1,M).
-square([_,M,_,_,_,_,_,_,_],2,M).
-square([_,_,M,_,_,_,_,_,_],3,M).
-square([_,_,_,M,_,_,_,_,_],4,M).
-square([_,_,_,_,M,_,_,_,_],5,M).
-square([_,_,_,_,_,M,_,_,_],6,M).
-square([_,_,_,_,_,_,M,_,_],7,M).
-square([_,_,_,_,_,_,_,M,_],8,M).
-square([_,_,_,_,_,_,_,_,M],9,M).
 % square(+B,+Move,+M) 
 % Check if the top element of a column Move is equal to M
 

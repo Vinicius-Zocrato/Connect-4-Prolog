@@ -19,7 +19,6 @@ set_AIType(Player, AIType):-
     read(NewAIType),
     set_AIType(Player, NewAIType).
 
-
 set_players(0) :- 
     set_AIType(1,' '),
     set_AIType(2,' ').
@@ -44,14 +43,14 @@ set_players(_) :-
 
 
 human_playing(M) :- 
-    (M == 'x' ; M == 'X'),
+    (M = 'x' ; M = 'X'), !,
     asserta( player(1, human) ),
     set_AIType(2,' ').
 
 human_playing(M) :- 
-    (M == 'o' ; M == 'O'),
-    set_AIType(1,' '),
-    asserta( player(2, human) ), !
+    (M = 'o' ; M = 'O'), !,
+    asserta( player(2, human) ),
+    set_AIType(1,' ')
     .
 
 human_playing(_) :-
