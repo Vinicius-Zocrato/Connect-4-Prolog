@@ -1,6 +1,6 @@
 :- begin_tests(connect4).
 
-:- consult('../project/projet.pl').
+:- (consult('../project/projet.pl')).
 
 %==========
 % TEST win
@@ -237,7 +237,7 @@ Board = [
 moves(Board, Valid),
 Valid == [1,3,5,7].
 
-:- end_tests(connect4).
+
 
 %==========
 % TEST display
@@ -350,3 +350,4 @@ NewBoard1 == [
   ['e','e','e','e','e','e']    
 ].
 
+:- end_tests(connect4).

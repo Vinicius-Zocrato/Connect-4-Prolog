@@ -55,7 +55,7 @@ asserta( board(B) ) - the current board
 asserta( player(P, Type) ) - indicates which players are human/computer.
 
 */
-
+:- loaded_project().
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     IMPORTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
