@@ -2,6 +2,8 @@
 winnigMove(Board, Mark, Move) :-
     %write('Checking winning move at '),
     moves(Board, ValidColumns),
+    length(ValidColumns, Len),
+    Len > 0,
     member(Move, ValidColumns), 
     %write(Move), nl,
     move(Board,Move,Mark,Board2),
@@ -11,6 +13,8 @@ winnigMove(Board, Mark, Move) :-
 notLoosingMove(Board, Mark, Move) :-
     %write('Checking blocking move...'), nl,
     moves(Board, ValidColumns),
+    length(ValidColumns, Len),
+    Len > 0,
     member(Move, ValidColumns),
     inverse_mark(Mark, Opponent),
     winnigMove(Board, Opponent, Move). % find a move that blocks the opponent from winning
