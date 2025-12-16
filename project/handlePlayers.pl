@@ -8,13 +8,14 @@ read_players :-
 
 set_AIType(Player, AIType):-
     allAI(AllAITypes),
-    member(AllAITypes, AIType),
-    (not(AIType==minmax), AIFullType = AIType; 
-    write('What depth ?'), read(Depth), AIFullType = [AIType, Depth]),
+    member(AIType, AllAITypes),
+    ((not(AIType==minmax), AIFullType = AIType); 
+    (write('What depth ?'), read(Depth), AIFullType = [AIType, Depth])),
     asserta( player(Player, AIFullType) ), !.
 
 set_AIType(Player, AIType):-
     allAI(AllAITypes),
+    not(member(AIType, AllAITypes)),
     write('What kind of AI should the computer'),write(Player), write(' use among '), write(AllAITypes), write('? '),
     read(NewAIType),
     set_AIType(Player, NewAIType).
@@ -22,7 +23,7 @@ set_AIType(Player, AIType):-
 
 set_players(0) :- 
     set_AIType(1,' '),
-    set_AIType(2,' ').
+    set_AIType(2,' '), !.
 
 set_players(1) :-
     nl,

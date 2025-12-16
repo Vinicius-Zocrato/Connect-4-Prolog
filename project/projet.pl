@@ -179,58 +179,6 @@ read_play_again(V) :-
     read_play_again(V)
     .
 
-
-read_players :-
-    nl,
-    nl,
-    write('Number of human players? '),
-    read(N),
-    set_players(N)
-    .
-
-set_players(0) :- 
-    asserta( player(1, computer) ),
-    asserta( player(2, computer) ), !
-    .
-
-set_players(1) :-
-    nl,
-    write('Is human playing X or O (X moves first)? '),
-    read(M),
-    human_playing(M), !
-    .
-
-set_players(2) :- 
-    asserta( player(1, human) ),
-    asserta( player(2, human) ), !
-    .
-
-set_players(_) :-
-    nl,
-    write('Please enter 0, 1, or 2.'),
-    read_players
-    .
-
-
-human_playing(M) :- 
-    (M == 'x' ; M == 'X'),
-    asserta( player(1, human) ),
-    asserta( player(2, computer) ), !
-    .
-
-human_playing(M) :- 
-    (M == 'o' ; M == 'O'),
-    asserta( player(1, computer) ),
-    asserta( player(2, human) ), !
-    .
-
-human_playing(_) :-
-    nl,
-    write('Please enter X or O.'),
-    set_players(1)
-    .
-
-
 play(P, LastCol) :-
     board(B), !,
     displayBoard(LastCol), !,
@@ -256,7 +204,7 @@ game_over2(P, B) :-
 
 game_over2(P, B) :-
     blank_mark(E),
-    not(square(B,S,E))     %%% game is over if opponent wins
+    not(square(B,S,E))     %%% game is over if no empty squares remain
     .
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
