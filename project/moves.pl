@@ -33,7 +33,7 @@ make_move2(random, Player, Board, B2, Move) :-
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
-    trace, randomAI(Board, Move),
+    randomAI(Board, Move),
     move(Board,Move,Mark,B2),
 
     nl,
@@ -65,8 +65,8 @@ make_move2([minimax, Depth], Player, Board, B2, Move) :-
     nl,
     write('Computer is thinking about next move...'),
     player_mark(Player, Mark),
-    utility(Board,Utility),
-    minimax(Depth,Board,Mark,Move,Utility),
+    minimax(0, Board,Mark,Move,Utility),
+    write('\n'), write('Utility: '), write(Utility),
     move(Board,Move,Mark,B2),
 
     nl,

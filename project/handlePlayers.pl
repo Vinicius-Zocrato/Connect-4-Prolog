@@ -8,9 +8,10 @@ read_players :-
 
 set_AIType(Player, AIType):-
     allAI(AllAITypes),
-    member(AllAITypes, AIType),
-    (not(AIType==minmax), AIFullType = AIType; 
+    member(AIType,AllAITypes),
+    (not(AIType==minimax), AIFullType = AIType; 
     write('What depth ?'), read(Depth), AIFullType = [AIType, Depth]),
+    asserta( maxdepth(Depth)),
     asserta( player(Player, AIFullType) ), !.
 
 set_AIType(Player, AIType):-

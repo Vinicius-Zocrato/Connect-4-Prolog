@@ -3,13 +3,12 @@
 %.......................................
 % The minimax algorithm always assumes an optimal opponent.
 % For tic-tac-toe, optimal play will always result in a tie, so the algorithm is effectively playing not-to-lose.
-utility(B, U) 
 % For the opening move against an optimal player, the best minimax can ever hope for is a tie.
 % So, technically speaking, any opening move is acceptable.
 % Save the user the trouble of waiting  for the computer to search the entire minimax tree 
 % by simply selecting a random square.
-utility(B, U) 
-minimax(D,[
+
+minimax(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -19,25 +18,49 @@ minimax(D,[
         [E,E,E,E,E,E]
     ],M,S,U) :-   
     blank_mark(E),
-    S is 4,
+    U = 0,
+    S = 4,
     !
     .
 
-minimax(D,B,M,S,U) :-
-    D < 4,              %%% limit the depth of the search to avoid long computation times
+minimax(D, B, M, S, U) :-
+    % Si un coup gagne immédiatement, le jouer 
+    moves(B, L),
+    member(Move, L),
+    move(B, Move, M, B2),
+    win(B2, M),
+    !,
+    S = Move,
+    U = 10000.
+
+minimax(D, B, M, S, U) :-
+    % Si l'adversaire peut gagner, bloquer
+    inverse_mark(M, OpponentMark),
+    moves(B, L),
+    member(Move, L),
+    move(B, Move, OpponentMark, B2),
+    win(B2, OpponentMark),
+    !,
+    S = Move,
+    U = -9999.
+
+minimax(D, B,M,S,U) :-
+    maxdepth(MaxDepth),
+    D < MaxDepth,              %%% limit the depth of the search to avoid long computation times
     D2 is D + 1,
     moves(B,L),          %%% get the list of available moves
     L \= [],             %%% if there are available moves,
     !,
-    best(D2,B,M,L,S,U),  %%% recursively determine the best available move
+    best(D2, B,M,L,S,U),  %%% recursively determine the best available move
     !
     .
 
 % if there are no more available moves, 
 % then the minimax value is the utility of the given board position
 
-minimax(D,B,M,S,U) :-
-    utility(B,U)      
+minimax(D, B,M,S,U) :-
+    utility(B,U),
+    S is 0      
     .
 
 
@@ -53,7 +76,7 @@ best(D,B,M,[S1],S,U) :-
     move(B,S1,M,B2),        %%% apply that move to the board,
     inverse_mark(M,M2), 
     !,  
-    minimax(D,B2,M2,_S,U),  %%% then recursively search for the utility value of that move.
+    minimax(D, B2,M2,_S,U),  %%% then recursively search for the utility value of that move.
     S = S1, !,
     output_value(D,S,U),
     !
@@ -152,16 +175,16 @@ calculate_score(B, Column, Row, Mark, Score) :-
 % score_direction - Compte les alignements dans une direction
 %.......................................
 % DeltaCol, DeltaRow = direction (ex: 1,0 = horizontal)
-% Retourne : 10 si 4 alignés, 5 si 3, 1 si 2, 0 sinon
+% Retourne : score selon le nombre d'alignés
 
 score_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Score) :-
-    % Compte vers un sens
+    % Compte vers un sens (inclut la pièce actuelle)
     count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count1),
     % Compte vers l'autre sens (inverse)
     NegDeltaCol is -DeltaCol,
     NegDeltaRow is -DeltaRow,
     count_in_direction(B, Col, Row, Mark, NegDeltaCol, NegDeltaRow, Count2),
-    % Total alignés (en supprimant la pièce actuelle que tu as comptée 2x)
+    % Total alignés (en retirant 1 car la pièce actuelle a été comptée 2 fois)
     Total is Count1 + Count2 - 1,
     score_from_count(Total, Score)
     .
@@ -169,6 +192,7 @@ score_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Score) :-
 %.......................................
 % count_in_direction - Compte les pièces alignées dans une direction
 %.......................................
+% Retourne 1 + nombre de voisins identiques dans cette direction
 
 count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
     NextCol is Col + DeltaCol,
@@ -182,12 +206,12 @@ count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
             count_in_direction(B, NextCol, NextRow, Mark, DeltaCol, DeltaRow, Count1),
             Count is Count1 + 1
         ;
-            % Pièce adverse ou vide : on arrête
-            Count is 0
+            % Pièce adverse ou vide : on arrête (mais on compte la pièce actuelle)
+            Count is 1
         )
     ;
-        % Hors limites
-        Count is 0
+        % Hors limites (mais on compte la pièce actuelle)
+        Count is 1
     ).
 
 %.......................................
@@ -195,13 +219,13 @@ count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
 %.......................................
 
 score_from_count(Total, Score) :-
-    Total >= 3, !, Score is 100.   % 4 alignés (victoire imminente)
+    Total >= 3, !, Score is 500.   % 4 alignés (victoire imminente)
 
 score_from_count(Total, Score) :-
     Total >= 2, !, Score is 50.     % 3 alignés (très bon)
 
 score_from_count(Total, Score) :-
-    Total >= 1, !, Score is 10.     % 2 alignés (bon)
+    Total >= 1, !, Score is 5.     % 2 alignés (bon)
 
 score_from_count(_, 0).              % 0 ou 1 : pas d'intérêt
 
