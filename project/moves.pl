@@ -4,8 +4,9 @@ make_move(P, B, Move) :-
     make_move2(Type, P, B, B2, Move),
 
     retract( board(_) ),
-    asserta( board(B2) )
-    .
+    asserta( board(B2) ),
+    utility(B2, U),
+    print_utility(Type, U).
 
 make_move2(human, P, B, B2, S) :-
     nl,
@@ -43,9 +44,10 @@ make_move2(random, Player, Board, B2, Move) :-
     write(Mark),
     write(' in column '),
     write(Move),
-    write('.').
+    write('.'),
+    nl.
 
-make_move2(blockWinning, Player, Board, B2) :-
+make_move2(blockWinning, Player, Board, B2, Move) :-
     player(P, Type),
     nl,
     nl,
@@ -62,14 +64,13 @@ make_move2(blockWinning, Player, Board, B2) :-
     write(Move),
     write('.').
 
-make_move2([minimax, Depth], Player, Board, B2) :-
+make_move2([minimax, Depth], Player, Board, B2, Move) :-
     player(P, Type),
     nl,
     nl,
     write(Type), write(' is thinking about next move...'),
     player_mark(Player, Mark),
-    utility(Board,Utility),
-    minimax(Depth,Board,Mark,Move,Utility),
+    minimax(0, Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
 
     nl,
@@ -78,7 +79,8 @@ make_move2([minimax, Depth], Player, Board, B2) :-
     write(Mark),
     write(' in column '),
     write(Move),
-    write('.').
+    write('.'),
+    nl.
 
 
 % moves(+Board, -ValidColumns)
@@ -98,17 +100,7 @@ column_not_full(Board, ColNum) :-
 %.......................................
 % square
 %.......................................
-% The mark in a square(N) corresponds to an item in a list, as follows:
 
-square([M,_,_,_,_,_,_,_,_],1,M).
-square([_,M,_,_,_,_,_,_,_],2,M).
-square([_,_,M,_,_,_,_,_,_],3,M).
-square([_,_,_,M,_,_,_,_,_],4,M).
-square([_,_,_,_,M,_,_,_,_],5,M).
-square([_,_,_,_,_,M,_,_,_],6,M).
-square([_,_,_,_,_,_,M,_,_],7,M).
-square([_,_,_,_,_,_,_,M,_],8,M).
-square([_,_,_,_,_,_,_,_,M],9,M).
 % square(+B,+Move,+M) 
 % Check if the top element of a column Move is equal to M
 
@@ -132,3 +124,11 @@ move(B,Move,Mark,B2) :-
     NewHeight is Height + 1,
     set_item(Column,NewHeight,Mark,L2),
     set_item(B,Move,L2,B2).
+
+
+print_utility(Type, U) :-
+    (Type = [minimax, _] -> 
+        (write('Minimax AI utility: '), write(U))
+    ;
+    true
+    ).

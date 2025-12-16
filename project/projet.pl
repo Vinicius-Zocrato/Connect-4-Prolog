@@ -177,7 +177,7 @@ read_play_again(V) :-
     nl,
     write('Please enter Y or N.'),
     read_play_again(V)
-    .
+    . 
 
 play(P, LastCol) :-
     board(B), !,
