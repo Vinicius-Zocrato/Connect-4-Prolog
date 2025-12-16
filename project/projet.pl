@@ -55,7 +55,7 @@ asserta( board(B) ) - the current board
 asserta( player(P, Type) ) - indicates which players are human/computer.
 
 */
-:- loaded_project().
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     IMPORTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,6 +150,7 @@ goodbye :-
     output_winner(B),
     retract(board(_)),
     retract(player(_,_)),
+    retractall(maxdepth(_)),
     read_play_again(V), !,
     (V == 'Y' ; V == 'y'), 
     !,
@@ -199,13 +200,13 @@ game_over(P, B) :-
 
 game_over2(P, B) :-
     opponent_mark(P, M),   %%% game is over if opponent wins
-    win(B, M)
-    .
+    win(B, M),
+    write('Game over: opponent wins.').
 
 game_over2(P, B) :-
     blank_mark(E),
-    not(square(B,S,E))     %%% game is over if no empty squares remain
-    .
+    not(square(B,S,E)) ,    %%% game is over if no empty squares remain
+    write('No more moves available. Game over.').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% OUTPUT

@@ -30,10 +30,9 @@ make_move2(human, P, B, B2, _) :-
     .
 
 make_move2(random, Player, Board, B2, Move) :-
-    player(P, Type),
     nl,
     nl,
-    write(Type), write(' is thinking about next move...'),
+    write('Random AI is thinking about next move...'),
     player_mark(Player, Mark),
     randomAI(Board, Move),
     move(Board,Move,Mark,B2),
@@ -48,10 +47,9 @@ make_move2(random, Player, Board, B2, Move) :-
     nl.
 
 make_move2(blockWinning, Player, Board, B2, Move) :-
-    player(P, Type),
     nl,
     nl,
-    write(Type), write(' is thinking about next move...'),
+    write('Block-winning AI is thinking about next move...'),
     player_mark(Player, Mark),
     blockWining(Board, Mark, Move),
     move(Board,Move,Mark,B2),
@@ -64,12 +62,12 @@ make_move2(blockWinning, Player, Board, B2, Move) :-
     write(Move),
     write('.').
 
-make_move2([minimax, Depth], Player, Board, B2, Move) :-
-    player(P, Type),
+make_move2(minimax, Player, Board, B2, Move) :-
     nl,
     nl,
-    write(Type), write(' is thinking about next move...'),
+    write('Min-max AI is thinking about next move...'),
     player_mark(Player, Mark),
+    %utility(Board, Utility),
     minimax(0, Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
 
