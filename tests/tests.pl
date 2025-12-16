@@ -1,6 +1,6 @@
 :- begin_tests(connect4).
 
-%:- consult('../project/projet.pl').
+:- consult('../project/projet.pl').
 
 %==========
 % TEST win

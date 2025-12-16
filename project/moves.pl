@@ -68,7 +68,7 @@ make_move2([minimax, Depth], Player, Board, B2) :-
     nl,
     write(Type), write(' is thinking about next move...'),
     player_mark(Player, Mark),
-    utility(Board,Utility)
+    utility(Board,Utility),
     minimax(Depth,Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
 
@@ -93,7 +93,7 @@ column_not_full(Board, ColNum) :-
     %write('Checking column '), write(Column), nl,
     blank_mark(H),
     %write('Blank mark is '), write(H), nl,
-   	member(H, Column). 
+   	member(H, Column),!. 
 
 %.......................................
 % square
