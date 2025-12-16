@@ -23,44 +23,23 @@ minimax(D, [
     !
     .
 
-minimax(D, B, M, S, U) :-
-    % Si un coup gagne immédiatement, le jouer 
-    moves(B, L),
-    member(Move, L),
-    move(B, Move, M, B2),
-    win(B2, M),
-    !,
-    S = Move,
-    U = 10000.
 
 minimax(D, B, M, S, U) :-
-    % Si l'adversaire peut gagner, bloquer
-    inverse_mark(M, OpponentMark),
-    moves(B, L),
-    member(Move, L),
-    move(B, Move, OpponentMark, B2),
-    win(B2, OpponentMark),
-    !,
-    S = Move,
-    U = -9999.
-
-minimax(D, B,M,S,U) :-
     maxdepth(MaxDepth),
     D < MaxDepth,              %%% limit the depth of the search to avoid long computation times
-    D2 is D + 1,
-    moves(B,L),          %%% get the list of available moves
-    L \= [],             %%% if there are available moves,
+    moves(B, L),               %%% get the list of available moves
+    L \= [],                   %%% if there are available moves,
     !,
-    best(D2, B,M,L,S,U),  %%% recursively determine the best available move
-    !
+    D2 is D + 1,
+    best(D2, B, M, L, S, U)    %%% recursively determine the best available move
     .
 
 % if there are no more available moves, 
 % then the minimax value is the utility of the given board position
 
-minimax(D, B,M,S,U) :-
-    utility(B,U),
-    S is 0      
+minimax(D, B, M, S, U) :-
+    utility(B, U),
+    S = 0      
     .
 
 
@@ -78,7 +57,7 @@ best(D,B,M,[S1],S,U) :-
     !,  
     minimax(D, B2,M2,_S,U),  %%% then recursively search for the utility value of that move.
     S = S1, !,
-    output_value(D,S,U),
+    %output_value(D,S,U),
     !
     .
 
@@ -90,7 +69,7 @@ best(D,B,M,[S1|T],S,U) :-
     !,
     minimax(D,B2,M2,_S,U1),      %%% recursively search for the utility value of that move,
     best(D,B,M,T,S2,U2),         %%% determine the best move of the remaining moves,
-    output_value(D,S1,U1),      
+    %output_value(D,S1,U1),      
     better(D,M,S1,U1,S2,U2,S,U)  %%% and choose the better of the two moves (based on their respective utility values)
     .
 
@@ -219,15 +198,18 @@ count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
 %.......................................
 
 score_from_count(Total, Score) :-
-    Total >= 3, !, Score is 500.   % 4 alignés (victoire imminente)
+    Total >= 4, !, Score is 10000.  % 4+ alignés = victoire !
 
 score_from_count(Total, Score) :-
-    Total >= 2, !, Score is 50.     % 3 alignés (très bon)
+    Total =:= 3, !, Score is 1000.  % 3 alignés = MENACE CRITIQUE
 
 score_from_count(Total, Score) :-
-    Total >= 1, !, Score is 5.     % 2 alignés (bon)
+    Total =:= 2, !, Score is 100.   % 2 alignés = bon
 
-score_from_count(_, 0).              % 0 ou 1 : pas d'intérêt
+score_from_count(Total, Score) :-
+    Total =:= 1, !, Score is 10.    % 1 pièce isolée = faible
+
+score_from_count(_, 0).              % 0 : impossible normalement
 
 %.......................................
 % utility - Évalue le plateau complet
