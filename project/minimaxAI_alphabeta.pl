@@ -34,7 +34,7 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
     L \= [],                   %%% if there are available moves,
     !,
     D2 is D + 1,
-    %order_moves(B, M, L, OrderedL),  % ordre des mouvements pour optimisation
+    order_moves(B, M, L, OrderedL),  % ordre des mouvements pour optimisation
     best_ab(D2, B, M, OrderedL, S, U, Alpha, Beta)    %%% recursively determine the best_ab available move
     .
 
@@ -58,11 +58,7 @@ best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),        %%% apply that move to the board,
     inverse_mark(M,M2),   
     minimax_ab(D, B2,M2,_S,U, Alpha, Beta),  %%% then recursively search for the utility value of that move.
-    S = S1, !
-    .
-
-% if there is more than one move in the list...
-% Implémentation de l'élagage alpha-beta
+    S = S1.
 
 best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),             %%% apply the first move (in the list) to the board,
@@ -73,7 +69,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     (maximizing(M) ->
         % Nœud de type Max
         NewAlpha is max(Alpha, U1),
-        (U1 >= Beta ->
+        (NewAlpha >= Beta ->
             % Coupure beta : on retourne immédiatement
             S = S1,
             U = U1
@@ -85,7 +81,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     ;
         % Nœud de type Min
         NewBeta is min(Beta, U1),
-        (U1 >= NewBeta ->
+        (NewBeta <= Alpha ->
             % Coupure alpha : on retourne immédiatement
             S = S1,
             U = U1
@@ -94,8 +90,15 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
             best_ab(D,B,M,T,S2,U2, Alpha, NewBeta),
             better(D,M,S1,U1,S2,U2,S,U)
         )
-    ), !
-    .
+    ).
+
+order_moves(B, M, Moves, OrderedMoves) :-
+    % Évaluer chaque coup avec un score heuristique
+    evaluate_moves(B, M, Moves, ScoredMoves),
+    % Trier par score décroissant (meilleurs en premier)
+    sort(1, @>=, ScoredMoves, SortedMoves),
+    % Extraire juste les colonnes (sans les scores)
+    extract_columns(SortedMoves, OrderedMoves).
 
 
 %.......................................
@@ -155,8 +158,8 @@ better2(D,R,M,S1,U1,S2,U2,  S,U) :-
     . 
 
 %.......................................
-% heuristique pour parcourir les branches de façon plus optimisée
-%.......................................
+% heuristique pour parcourir les branches de façon plus optimisée %
+
 
 order_moves(B, M, Moves, OrderedMoves) :-
     % Évaluer chaque coup avec un score heuristique
@@ -167,7 +170,6 @@ order_moves(B, M, Moves, OrderedMoves) :-
     extract_columns(SortedMoves, OrderedMoves).
 
 
-%.......................................
 % evaluate_moves - Évalue chaque coup
 %.......................................
 evaluate_moves(_, _, [], []).

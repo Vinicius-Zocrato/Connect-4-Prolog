@@ -26,7 +26,7 @@ make_move2(human, P, B, B2, _) :-
     nl,
     nl,
     write('Please select a numbered square.'),
-    make_move2(human,P,B,B2)
+    make_move2(human,P,B,B2,_)
     .
 
 make_move2(random, Player, Board, B2, Move) :-
@@ -120,7 +120,7 @@ square(B,Move,M):-
     nth1(Move, B, Column),
     height(Column, Height), 
     Index is Height + 1, %% first empty position in the column
-    Index < 6, 
+    Index =< 6, 
     nth1(Index, Column, M).
 
 %.......................................
