@@ -69,7 +69,22 @@ make_move2([minimax, Depth], Player, Board, B2, Move) :-
     player_mark(Player, Mark),
     minimax(0, Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.'),
+    nl.
 
+make_move2([minimax_ab, Depth], Player, Board, B2, Move) :-
+    nl,
+    nl,
+    write('Computer is thinking (Alpha-Beta)...'),
+    player_mark(Player, Mark),
+    minimax_ab(0, Board, Mark, Move, Utility, -10000, 10000),  % Alpha=-10000, Beta=+10000
+    move(Board, Move, Mark, B2),
     nl,
     nl,
     write('Computer places '),

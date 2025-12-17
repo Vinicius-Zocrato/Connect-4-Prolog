@@ -68,8 +68,10 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('lists.pl').
 :- include('random.pl').
 :- include('handlePlayers.pl').
+:- include('minimaxAI_alphabeta.pl').
 
-:- asserta( allAI([random, blockWinning, minimax]) ).
+:- asserta( allAI([random, blockWinning, minimax, minimax_ab]) ).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -176,8 +178,7 @@ read_play_again(V) :-
     nl,
     nl,
     write('Please enter Y or N.'),
-    read_play_again(V)
-    . 
+    read_play_again(V).
 
 play(P, LastCol) :-
     board(B), !,
