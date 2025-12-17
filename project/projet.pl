@@ -62,7 +62,7 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('win.pl').
 :- include('moves.pl').
 :- include('display.pl').
-:- include('minmaxAI.pl').
+%:- include('minmaxAI.pl'). % Attention, des méthodes sont redéfinies dans minimaxAI_alphabeta.pl
 :- include('randomAI.pl').
 :- include('blockingWiningAI.pl').
 :- include('lists.pl').

@@ -6,7 +6,9 @@ make_move(P, B, Move) :-
     retract( board(_) ),
     asserta( board(B2) ),
     utility(B2, U),
-    print_utility(Type, U).
+    write('Utility: '), write(U)
+    %print_utility(Type, U)
+    .
 
 make_move2(human, P, B, B2, S) :-
     nl,
@@ -83,7 +85,7 @@ make_move2([minimax_ab, Depth], Player, Board, B2, Move) :-
     nl,
     write('Computer is thinking (Alpha-Beta)...'),
     player_mark(Player, Mark),
-    minimax_ab(0, Board, Mark, Move, Utility, -10000, 10000),  % Alpha=-10000, Beta=+10000
+    minimax_ab(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
     move(Board, Move, Mark, B2),
     nl,
     nl,
@@ -104,10 +106,8 @@ moves(Board, ValidColumns) :-
 % column_not_full(+Board, +ColNum)
 column_not_full(Board, ColNum) :-
     nth1(ColNum, Board, Column),
-    %write('Checking column '), write(Column), nl,
     blank_mark(H),
-    %write('Blank mark is '), write(H), nl,
-   	member(H, Column). 
+    member(H, Column), !.  % CORRECTION: Ajout du cut pour éviter les doublons 
 
 %.......................................
 % square
@@ -139,7 +139,7 @@ move(B,S,M,B2) :-
 
 
 print_utility(Type, U) :-
-    (Type = [minimax, _] -> 
+    (Type = [minimax_ab, _] -> 
         (write('Minimax AI utility: '), write(U))
     ;
     true

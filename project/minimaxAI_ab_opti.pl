@@ -41,8 +41,8 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
     L \= [],                   %%% if there are available moves,
     !,
     D2 is D + 1,
-    %order_moves(B, M, L, OrderedL),  % ordre des mouvements pour optimisation
-    best_ab(D2, B, M, L, S, U, Alpha, Beta)    %%% recursively determine the best_ab available move
+    order_moves(B, M, L, OrderedL),  % ordre des mouvements pour optimisation
+    best_ab(D2, B, M, OrderedL, S, U, Alpha, Beta)    %%% recursively determine the best_ab available move
     .
 
 % if there are no more available moves, 
@@ -353,14 +353,18 @@ utility(B, U) :-
     .
 
 utility(B, U) :-
-    % somme tous les scores du boad pour donner l'utility
+    % somme tous les scores du board pour donner l'utility
     aggregate_all(sum(ScoreVal), 
         (between(1, 7, Col),
          between(1, 6, Row),
          get_item(B, Col, Column),
          get_item(Column, Row, V),
          calculate_score(B, Col, Row, V, S1),
-         (V == 'x' -> ScoreVal = S1 ; V == 'o' -> ScoreVal = -S1 ; ScoreVal = 0)),
+         center_bonus(Col, CenterBonus),
+         % Ajouter le bonus de position centrale à chaque pièce
+         (V == 'x' -> ScoreVal is S1 + CenterBonus ; 
+          V == 'o' -> ScoreVal is -(S1 + CenterBonus) ; 
+          ScoreVal = 0)),
         U)
         . 
 

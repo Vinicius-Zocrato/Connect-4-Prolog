@@ -237,8 +237,6 @@ Board = [
 moves(Board, Valid),
 Valid == [1,3,5,7].
 
-:- end_tests(connect4).
-
 %==========
 % TEST display
 %==========
@@ -349,3 +347,90 @@ NewBoard1 == [
   ['e','e','e','e','e','e']    
 ].
 
+% Test utility
+
+% ============================================
+% TEST 1: X gagne - devrait retourner 10000
+% ============================================
+test(utility_x_wins) :-
+    Board = [
+        ['x','x','x','x','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e']
+    ],
+    utility(Board, U),
+    U == 10000.
+
+% ============================================
+% TEST 2: O gagne - devrait retourner -10000
+% ============================================
+test(utility_o_wins) :-
+    Board = [
+        ['o','e','e','e','e','e'],
+        ['o','e','e','e','e','e'],
+        ['o','e','e','e','e','e'],
+        ['o','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e']
+    ],
+    utility(Board, U),
+    U == -10000.
+
+% ============================================
+% TEST 3: Board vide - devrait retourner 0
+% ============================================
+test(utility_empty_board) :-
+    Board = [
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e']
+    ],
+    utility(Board, U),
+    U == 0.
+
+% ============================================
+% TEST 4: Board avec quelques pions - score positif pour X
+% ============================================
+test(utility_x_advantage) :-
+    Board = [
+        ['x','x','x','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e']
+    ],
+    utility(Board, U),
+    U > 0.
+
+% ============================================
+% TEST 5: Board avec quelques pions - score négatif pour O
+% ============================================
+test(utility_o_advantage) :-
+    Board = [
+        ['o','o','o','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e'],
+        ['e','e','e','e','e','e']
+    ],
+    utility(Board, U),
+    U < 0.
+
+:- end_tests(connect4).
+
+%==========
+% TEST display
+%==========
