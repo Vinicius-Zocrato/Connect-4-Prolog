@@ -150,7 +150,7 @@ better(D,M,S1,U1,S2,U2,     S,U) :-
     write('EQUAL Comparing U1 and U2 :'), write(U1), write(' vs '), write(U2), nl
     !
     .
-
+   
 better(D,M,S1,U1,S2,U2,     S,U) :-        %%% otherwise, second move is better
     S = S2,
     U = U2,
