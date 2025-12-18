@@ -7,7 +7,7 @@ read_players :-
     .
 
 set_AIType(Player, AIType):-
-    retractall(maxdepth(_)),
+    retractall(maxdepth(AIType,_)),
     %retractall(player(Player,_)),
     allAI(AllAITypes),
     member(AIType,AllAITypes),
