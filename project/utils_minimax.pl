@@ -168,10 +168,6 @@ utility(B, U) :-
     .
     
 utility(B, U) :-
-    U = 0, !
-        . 
-
-utility(B, U) :-
     % somme tous les scores du board pour donner l'utility
     aggregate_all(sum(ScoreVal), 
         (between(1, 7, Col),
