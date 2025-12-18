@@ -6,7 +6,9 @@ make_move(P, B, Move) :-
     retract( board(_) ),
     asserta( board(B2) ),
     utility(B2, U),
-    print_utility(Type, U).
+    write('Utility: '), write(U)
+    %print_utility(Type, U)
+    .
 
 make_move2(human, P, B, B2, S) :-
     nl,
@@ -26,7 +28,7 @@ make_move2(human, P, B, B2, _) :-
     nl,
     nl,
     write('Please select a numbered square.'),
-    make_move2(human,P,B,B2)
+    make_move2(human,P,B,B2,_)
     .
 
 make_move2(random, Player, Board, B2, Move) :-
@@ -70,7 +72,22 @@ make_move2(minimax, Player, Board, B2, Move) :-
     %utility(Board, Utility),
     minimax(0, Board,Mark,Move,Utility),
     move(Board,Move,Mark,B2),
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.'),
+    nl.
 
+make_move2([minimax_ab, Depth], Player, Board, B2, Move) :-
+    nl,
+    nl,
+    write('Computer is thinking (Alpha-Beta)...'),
+    player_mark(Player, Mark),
+    minimax_ab(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
+    move(Board, Move, Mark, B2),
     nl,
     nl,
     write('Computer places '),
@@ -90,10 +107,8 @@ moves(Board, ValidColumns) :-
 % column_not_full(+Board, +ColNum)
 column_not_full(Board, ColNum) :-
     nth1(ColNum, Board, Column),
-    %write('Checking column '), write(Column), nl,
     blank_mark(H),
-    %write('Blank mark is '), write(H), nl,
-   	member(H, Column),!. 
+    member(H, Column), !.  % CORRECTION: Ajout du cut pour éviter les doublons 
 
 %.......................................
 % square
@@ -106,7 +121,7 @@ square(B,Move,M):-
     nth1(Move, B, Column),
     height(Column, Height), 
     Index is Height + 1, %% first empty position in the column
-    Index < 6, 
+    Index =< 6, 
     nth1(Index, Column, M).
 
 %.......................................
@@ -125,7 +140,7 @@ move(B,Move,Mark,B2) :-
 
 
 print_utility(Type, U) :-
-    (Type = [minimax, _] -> 
+    (Type = [minimax_ab, _] -> 
         (write('Minimax AI utility: '), write(U))
     ;
     true

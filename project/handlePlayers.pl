@@ -11,9 +11,10 @@ set_AIType(Player, AIType):-
     %retractall(player(Player,_)),
     allAI(AllAITypes),
     member(AIType,AllAITypes),
-    (not(AIType==minimax); 
-    write('What depth ?'), read(Depth), asserta( maxdepth(Depth))),
-    asserta( player(Player, AIType) ), !.
+    (not(AIType==minimax; AIType==minimax_ab), AIFullType = AIType; 
+    write('What depth ?'), read(Depth), AIFullType = [AIType, Depth]),
+    asserta( maxdepth(Depth)),
+    asserta( player(Player, AIFullType) ), !.
 
 set_AIType(Player, AIType):-
     allAI(AllAITypes),
