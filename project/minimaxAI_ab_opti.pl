@@ -3,7 +3,7 @@
 %.......................................
 % The minimax_ab_opti algorithm always assumes an optimal opponent.
 % For tic-tac-toe, optimal play will always result in a tie, so the algorithm is effectively playing not-to-lose.
-% For the opening move against an optimal player, the best_ab minimax_ab_opti can ever hope for is a tie.
+% For the opening move against an optimal player, the best_ab_opti minimax_ab_opti can ever hope for is a tie.
 % So, technically speaking, any opening move is acceptable.
 % Save the user the trouble of waiting  for the computer to search the entire minimax_ab_opti tree 
 % by imply selecting a random square.
@@ -42,7 +42,7 @@ minimax_ab_opti(D, B, M, S, U, Alpha, Beta) :-
     !,
     D2 is D + 1,
     order_moves(B, M, L, OrderedL),  % ordre des mouvements pour optimisation
-    best_ab(D2, B, M, OrderedL, S, U, Alpha, Beta)    %%% recursively determine the best_ab available move
+    best_ab_opti(D2, B, M, OrderedL, S, U, Alpha, Beta)    %%% recursively determine the best_ab_opti available move
     .
 
 % if there are no more available moves, 
@@ -54,14 +54,14 @@ minimax_ab_opti(D, B, M, S, U, Alpha, Beta) :-
 
 
 %.......................................
-% best_ab avec alpha-beta pruning
+% best_ab_opti avec alpha-beta pruning
 %.......................................
-% determines the best_ab move in a given list of moves by recursively calling minimax_ab_opti
+% determines the best_ab_opti move in a given list of moves by recursively calling minimax_ab_opti
 %
 
 % if there is only one move left in the list...
 
-best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
+best_ab_opti(D,B,M,[S1],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),        %%% apply that move to the board,
     inverse_mark(M,M2),   
     minimax_ab_opti(D, B2,M2,_S,U, Alpha, Beta),  %%% then recursively search for the utility value of that move.
@@ -71,7 +71,7 @@ best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
 % if there is more than one move in the list...
 % OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
 
-best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+best_ab_opti(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),
     win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
     !,                           %%% Pas besoin de chercher plus loin
@@ -82,7 +82,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
 % if there is more than one move in the list...
 % Implémentation de l'élagage alpha-beta
 
-best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+best_ab_opti(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),             %%% apply the first move (in the list) to the board,
     inverse_mark(M,M2), 
     minimax_ab_opti(D,B2,M2,_S,U1, Alpha, Beta),      %%% recursively search for the utility value of that move,
@@ -98,7 +98,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
             write('PRUNED')
         ;
             % Pas de coupure : on continue avec les autres mouvements
-            best_ab(D,B,M,T,S2,U2, NewAlpha, Beta),
+            best_ab_opti(D,B,M,T,S2,U2, NewAlpha, Beta),
             better(D,M,S1,U1,S2,U2,S,U)
         )
     ;
@@ -111,7 +111,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
             write('PRUNED')
         ;
             % Pas de coupure : on continue avec les autres mouvements
-            best_ab(D,B,M,T,S2,U2, Alpha, NewBeta),
+            best_ab_opti(D,B,M,T,S2,U2, Alpha, NewBeta),
             better(D,M,S1,U1,S2,U2,S,U)
         )
     ), !
@@ -175,19 +175,7 @@ would_win_next(B, Col, M) :-
     move(B, Col, M, B2),
     win(B2, M).
 
-%.......................................
-% center_bonus - Bonus pour colonnes centrales
-%.......................................
-% Colonnes centrales (4) > près du centre (3,5) > bords (2,6) > coins (1,7)
 
-center_bonus(4, 400) :- !.      % Colonne centrale
-center_bonus(3, 300) :- !.      % Près du centre
-center_bonus(5, 300) :- !.      % Près du centre
-center_bonus(2, 100) :- !.      % Bords
-center_bonus(6, 100) :- !.      % Bords
-center_bonus(1, 0) :- !.        % Coins
-center_bonus(7, 0) :- !.        % Coins
-center_bonus(_, 0).             % Par défaut
 
 %.......................................
 % extract_columns - Extrait les colonnes d'une liste (Score-Col)
@@ -195,87 +183,6 @@ center_bonus(_, 0).             % Par défaut
 extract_columns([], []).
 extract_columns([_Score-Col|Rest], [Col|RestCols]) :-
     extract_columns(Rest, RestCols).
-
-
-%.......................................
-% calculate_score - Évalue le potentiel d'une pièce
-%.......................................
-% Pour chaque pièce, on compte les alignements potentiels dans 4 directions
-% Score = somme des alignements 'x' ou 'o' dans chaque direction
-
-calculate_score(_, _, _, 'e', 0) :- !. 
-% pièce vide = pas de score
-
-calculate_score(B, Column, Row, Mark, Score) :-
-    Mark \= 'e',  % seulement pour 'x' ou 'o'
-    % 4 directions : horizontal, vertical, diag-down-right, diag-up-right
-    score_direction(B, Column, Row, Mark, 0, 1, S1),      % horizontal
-    score_direction(B, Column, Row, Mark, 1, 0, S2),      % vertical
-    score_direction(B, Column, Row, Mark, 1, -1, S3),      % diag topleft-bottomright
-    score_direction(B, Column, Row, Mark, 1, 1, S4),     % diag bottomleft-topright
-    Score is S1 + S2 + S3 + S4
-    .
-
-%.......................................
-% score_direction - Compte les alignements dans une direction
-%.......................................
-% DeltaCol, DeltaRow = direction (ex: 1,0 = horizontal)
-% Retourne : score selon le nombre d'alignés
-
-score_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Score) :-
-    % Compte vers un sens (inclut la pièce actuelle)
-    count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count1),
-    % Compte vers l'autre sens (inverse)
-    NegDeltaCol is -DeltaCol,
-    NegDeltaRow is -DeltaRow,
-    count_in_direction(B, Col, Row, Mark, NegDeltaCol, NegDeltaRow, Count2),
-    % Total alignés (en retirant 1 car la pièce actuelle a été comptée 2 fois)
-    Total is Count1 + Count2 - 1,
-    score_from_count(Total, Score)
-    .
-
-%.......................................
-% count_in_direction - Compte les pièces alignées dans une direction
-%.......................................
-% Retourne 1 + nombre de voisins identiques dans cette direction
-
-count_in_direction(B, Col, Row, Mark, DeltaCol, DeltaRow, Count) :-
-    NextCol is Col + DeltaCol,
-    NextRow is Row + DeltaRow,
-    % Vérifier les limites du board
-    (NextCol >= 1, NextCol =< 7, NextRow >= 1, NextRow =< 6 ->
-        get_item(B, NextCol, Column),
-        get_item(Column, NextRow, V),
-        (V == Mark ->
-            % Pièce du même joueur : on continue et on compte
-            count_in_direction(B, NextCol, NextRow, Mark, DeltaCol, DeltaRow, Count1),
-            Count is Count1 + 1
-        ;
-            % Pièce adverse ou vide : on arrête (mais on compte la pièce actuelle)
-            Count is 1
-        )
-    ;
-        % Hors limites (mais on compte la pièce actuelle)
-        Count is 1
-    ).
-
-%.......................................
-% score_from_count - Convertit le nombre d'alignés en score
-%.......................................
-
-score_from_count(Total, Score) :-
-    Total >= 4, !, Score is 100000.  % 4+ alignés = VICTOIRE !
-
-score_from_count(Total, Score) :-
-    Total = 3, !, Score is 1000.  % 3 alignés = MENACE CRITIQUE
-
-score_from_count(Total, Score) :-
-    Total = 2, !, Score is 100.   % 2 alignés = bon
-
-score_from_count(Total, Score) :-
-    Total = 1, !, Score is 10.    % 1 pièce isolée = faible
-
-score_from_count(_, 0).              % 0 : impossible normalement
 
 
 
