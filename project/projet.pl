@@ -207,9 +207,9 @@ game_over2(P, B) :-
     win(B, M),
     write('Game over: opponent wins.').
 
-game_over2(P, B) :-
+game_over2(_, B) :-
     blank_mark(E),
-    not(square(B,S,E)) ,    %%% game is over if no empty squares remain
+    not(square(B,_,E)) ,    %%% game is over if no empty squares remain
     write('No more moves available. Game over.').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

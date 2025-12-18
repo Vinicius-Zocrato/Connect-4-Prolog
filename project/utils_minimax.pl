@@ -13,7 +13,7 @@ better(D,M,S1,U1,S2,U2,     S,U) :-
     !
     .
 
-better(D,M,S1,U1,S2,U2,     S,U) :-
+better(_,M,S1,U1,_,U2,     S,U) :-
     minimizing(M),                     %%% if the player is minimizing,
     U1 < U2,                           %%% then lesser is better.
     S = S1,
@@ -41,14 +41,14 @@ better(D,M,S1,U1,S2,U2,     S,U) :-        %%% otherwise, second move is better
 % randomly selects two squares of the same utility value given a single probability
 %
 
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
+better2(_,R,_,S1,U1,_,_,  S,U) :-
     R < 6,
     S = S1,
     U = U1, 
     !
     .
 
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
+better2(_,_,_,_,_,S2,U2,  S,U) :-
     S = S2,
     U = U2,
     !
