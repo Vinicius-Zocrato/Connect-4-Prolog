@@ -28,7 +28,7 @@ displayBoard(LastCol):-
     board(Board),
     swapBoard(Board, ReadBoard),
     nl,
-    displayLines(ReadBoard, LastCol, Printed).
+    displayLines(ReadBoard, LastCol, _).
 
 display([], _, _, _) :-
     write("|"),

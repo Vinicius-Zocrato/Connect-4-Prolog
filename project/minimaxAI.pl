@@ -8,7 +8,7 @@
 % Save the user the trouble of waiting  for the computer to search the entire minimax tree 
 % by simply selecting a random square.
 
-minimax(D, [
+minimax(_, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -16,7 +16,7 @@ minimax(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E]
-    ],M,S,U) :-   
+    ],_,S,U) :-   
     blank_mark(E),
     U = 0,
     S = 4,
@@ -37,7 +37,7 @@ minimax(D, B, M, S, U) :-
 % if there are no more available moves, 
 % then the minimax value is the utility_vanilla of the given board position
 
-minimax(D, B, M, S, U) :-
+minimax(_, B, _, S, U) :-
     utility_vanilla(B, U),
     S = 0, !
     .
@@ -82,7 +82,7 @@ utility_vanilla(B, U) :-
     U = (-100000), !
     .
     
-utility_vanilla(B, U) :-
+utility_vanilla(_, U) :-
     U = 0, !
         . 
 

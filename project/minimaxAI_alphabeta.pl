@@ -8,7 +8,7 @@
 % Save the user the trouble of waiting  for the computer to search the entire minimax_ab tree 
 % by imply selecting a random square.
 
-minimax_ab(D, [
+minimax_ab(_, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -16,7 +16,7 @@ minimax_ab(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E]
-    ],M,S,U, Alpha, Beta) :-   
+    ],_,S,U, _, _) :-   
     blank_mark(E),
     U = 0,
     S = 4,
@@ -28,7 +28,7 @@ minimax_ab(D, [
 % Alpha = meilleure valeur pour Max, Beta = meilleure valeur pour Min
 
 % VÉRIFICATION PRÉCOCE : Si quelqu'un a gagné, arrêter immédiatement
-minimax_ab(D, B, M, S, U, Alpha, Beta) :-
+minimax_ab(_, B, _, _, U, _, _) :-
     (win(B, 'x') ; win(B, 'o')),   %%% Si victoire détectée
     !,
     utility(B, U)                   %%% Retourner l'utilité immédiatement
@@ -47,7 +47,7 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
 % if there are no more available moves, 
 % then the minimax_ab value is the utility of the given board position
 
-minimax_ab(D, B, M, S, U, Alpha, Beta) :-
+minimax_ab(_, B, _, _, U, _, _) :-
     utility(B, U)    
     .
 
@@ -70,7 +70,7 @@ best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
 % if there is more than one move in the list...
 % OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
 
-best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+best_ab(_,B,M,[S1|_],S,U, _, _) :-
     move(B,S1,M,B2),
     win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
     !,                           %%% Pas besoin de chercher plus loin

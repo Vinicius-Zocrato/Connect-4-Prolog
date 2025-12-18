@@ -8,7 +8,7 @@
 % Save the user the trouble of waiting  for the computer to search the entire minimax_scoring tree 
 % by simply selecting a random square.
 
-minimax_scoring(D, [
+minimax_scoring(_, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -16,7 +16,7 @@ minimax_scoring(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E]
-    ],M,S,U) :-   
+    ],_,S,U) :-   
     blank_mark(E),
     U = 0,
     S = 4,
@@ -37,7 +37,7 @@ minimax_scoring(D, B, M, S, U) :-
 % if there are no more available moves, 
 % then the minimax_scoring value is the utility of the given board position
 
-minimax_scoring(D, B, M, S, U) :-
+minimax_scoring(_, B, _, S, U) :-
     utility(B, U),
     S = 0, !
     .
