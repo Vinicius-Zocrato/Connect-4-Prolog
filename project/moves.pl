@@ -67,7 +67,9 @@ make_move2(blockWinning, Player, Board, B2, Move) :-
 make_move2(minimax, Player, Board, B2, Move) :-
     nl,
     nl,
-    write('Min-max AI is thinking about next move...'),
+    maxdepth(minimax, Depth),
+    write('Minimax AI is thinking about next move... | depth : '),
+    write(Depth), nl,
     player_mark(Player, Mark),
     %utility(Board, Utility),
     minimax(0, Board,Mark,Move,Utility),
@@ -103,7 +105,9 @@ make_move2(minimax_scoring, Player, Board, B2, Move) :-
 make_move2(minimax_ab, Player, Board, B2, Move) :-
     nl,
     nl,
-    write('Alpha-Beta is thinking about next move...'),
+    maxdepth(minimax_ab, Depth),
+    write('Alpha-Beta AI is thinking about next move... | depth : '),
+    write(Depth), nl,
     player_mark(Player, Mark),
     minimax_ab(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
     move(Board, Move, Mark, B2),
