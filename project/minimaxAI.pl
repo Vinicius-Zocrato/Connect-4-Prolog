@@ -66,6 +66,14 @@ best(_,B,M,[S1|_],S,U) :-
     win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
     !,                           %%% Pas besoin de chercher plus loin
     S = S1,
+    utility(B2, U) .           %%% Retourner le score de victoire avec profondeur
+
+best(_,B,M,[S1|_],S,U, _, _) :-
+    move(B,S1,M,B2),
+    opponent_mark(M,M2),
+    win(B2, M2),                  %%% Si CE coup me fait gagner immédiatement
+    !,                           %%% Pas besoin de chercher plus loin
+    S = S1,
     utility(B2, U)            %%% Retourner le score de victoire avec profondeur
     .
 
