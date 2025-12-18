@@ -94,7 +94,6 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
             % Coupure beta : on retourne immédiatement
             S = S1,
             U = NewAlpha,
-            write('PRUNED')
         ;
             % Pas de coupure : on continue avec les autres mouvements
             best_ab(D,B,M,T,S2,U2, NewAlpha, Beta),
@@ -107,7 +106,6 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
             % Coupure alpha : on retourne immédiatement
             S = S1,
             U = NewBeta,
-            write('PRUNED')
         ;
             % Pas de coupure : on continue avec les autres mouvements
             best_ab(D,B,M,T,S2,U2, Alpha, NewBeta),
