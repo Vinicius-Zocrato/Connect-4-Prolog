@@ -21,12 +21,12 @@ better(D,M,S1,U1,S2,U2,     S,U) :-
     !
     .
 
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    U1 == U2,                          %%% if moves have equal utility,
-    random_int_1n(10,R),               %%% then pick one of them at random
-    better2(D,R,M,S1,U1,S2,U2,S,U),    
-    !
-    .
+% better(D,M,S1,U1,S2,U2,     S,U) :-
+%     U1 == U2,                          %%% if moves have equal utility,
+%     random_int_1n(10,R),               %%% then pick one of them at random
+%     better2(D,R,M,S1,U1,S2,U2,S,U),    
+%     !
+%     .
    
 better(D,M,S1,U1,S2,U2,     S,U) :-        %%% otherwise, second move is better
     S = S2,
