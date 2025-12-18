@@ -62,7 +62,7 @@ best_scoring(D,B,M,[S1],S,U) :-
 % if there is more than one move in the list...
 % OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
 
-best_scoring(D,B,M,[S1|T],S,U) :-
+best_scoring(_,B,M,[S1|_],S,U) :-
     move(B,S1,M,B2),
     win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
     !,                           %%% Pas besoin de chercher plus loin
