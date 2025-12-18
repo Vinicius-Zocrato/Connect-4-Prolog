@@ -59,6 +59,15 @@ best(D,B,M,[S1],S,U) :-
     .
 
 % if there is more than one move in the list...
+% OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
+
+best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+    move(B,S1,M,B2),
+    win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
+    !,                           %%% Pas besoin de chercher plus loin
+    S = S1,
+    utility(B2, U)            %%% Retourner le score de victoire avec profondeur
+    .
 
 best(D,B,M,[S1|T],S,U) :-
     move(B,S1,M,B2),             %%% apply the first move (in the list) to the board,
