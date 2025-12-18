@@ -25,7 +25,7 @@ minimax(D, [
 
 
 minimax(D, B, M, S, U) :-
-    maxdepth(MaxDepth),
+    maxdepth(minimax, MaxDepth),
     D < MaxDepth,              %%% limit the depth of the search to avoid long computation times
     moves(B, L),               %%% get the list of available moves
     L \= [],                   %%% if there are available moves,
@@ -35,10 +35,10 @@ minimax(D, B, M, S, U) :-
     .
 
 % if there are no more available moves, 
-% then the minimax value is the utility of the given board position
+% then the minimax value is the utility_vanilla of the given board position
 
 minimax(D, B, M, S, U) :-
-    utility(B, U),
+    utility_vanilla(B, U),
     S = 0, !
     .
 
@@ -54,7 +54,7 @@ minimax(D, B, M, S, U) :-
 best(D,B,M,[S1],S,U) :-
     move(B,S1,M,B2),        %%% apply that move to the board,
     inverse_mark(M,M2), !,   
-    minimax(D, B2,M2,_S,U),  %%% then recursively search for the utility value of that move.
+    minimax(D, B2,M2,_S,U),  %%% then recursively search for the utility_vanilla value of that move.
     S = S1, !
     .
 
@@ -63,83 +63,27 @@ best(D,B,M,[S1],S,U) :-
 best(D,B,M,[S1|T],S,U) :-
     move(B,S1,M,B2),             %%% apply the first move (in the list) to the board,
     inverse_mark(M,M2), !,
-    minimax(D,B2,M2,_S,U1),      %%% recursively search for the utility value of that move,
+    minimax(D,B2,M2,_S,U1),      %%% recursively search for the utility_vanilla value of that move,
     best(D,B,M,T,S2,U2),         %%% determine the best move of the remaining moves,     
-    better(D,M,S1,U1,S2,U2,S,U), !  %%% and choose the better of the two moves (based on their respective utility values)
-    .
-
-
-%.......................................
-% better
-%.......................................
-% returns the better of two moves based on their respective utility values.
-%
-% if both moves have the same utility value, then one is chosen at random.
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    maximizing(M),                     %%% if the player is maximizing
-    U1 > U2,                           %%% then greater is better.
-    S = S1,
-    U = U1,
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    minimizing(M),                     %%% if the player is minimizing,
-    U1 < U2,                           %%% then lesser is better.
-    S = S1,
-    U = U1, 
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    U1 == U2,                          %%% if moves have equal utility,
-    random_int_1n(10,R),               %%% then pick one of them at random
-    better2(D,R,M,S1,U1,S2,U2,S,U),    
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-        %%% otherwise, second move is better
-    S = S2,
-    U = U2,
-    !
-    .
-
-
-%.......................................
-% better2
-%.......................................
-% randomly selects two squares of the same utility value given a single probability
-%
-
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
-    R < 6,
-    S = S1,
-    U = U1, 
-    !
-    .
-
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
-    S = S2,
-    U = U2,
-    !
+    better(D,M,S1,U1,S2,U2,S,U), !  %%% and choose the better of the two moves (based on their respective utility_vanilla values)
     . 
-
+    
 %.......................................
-% utility - Évalue le plateau complet
+% utility_vanilla - Évalue le plateau complet
 %.......................................
 
-utility(B, U) :-
+utility_vanilla(B, U) :-
     win(B, 'x'),
-    U = 10000, !
+    U = 100000, !
     .
 
-utility(B, U) :-
+utility_vanilla(B, U) :-
     win(B, 'o'),
-    U = (-10000), !
+    U = (-100000), !
     .
-
-utility(B, U) :-
+    
+utility_vanilla(B, U) :-
     U = 0, !
         . 
+
 

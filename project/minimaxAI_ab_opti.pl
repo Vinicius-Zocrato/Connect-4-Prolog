@@ -1,14 +1,14 @@
 %.......................................
-% minimax_ab
+% minimax_ab_opti
 %.......................................
-% The minimax_ab algorithm always assumes an optimal opponent.
+% The minimax_ab_opti algorithm always assumes an optimal opponent.
 % For tic-tac-toe, optimal play will always result in a tie, so the algorithm is effectively playing not-to-lose.
-% For the opening move against an optimal player, the best_ab minimax_ab can ever hope for is a tie.
+% For the opening move against an optimal player, the best_ab minimax_ab_opti can ever hope for is a tie.
 % So, technically speaking, any opening move is acceptable.
-% Save the user the trouble of waiting  for the computer to search the entire minimax_ab tree 
+% Save the user the trouble of waiting  for the computer to search the entire minimax_ab_opti tree 
 % by imply selecting a random square.
 
-minimax_ab(D, [
+minimax_ab_opti(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -23,19 +23,19 @@ minimax_ab(D, [
     !
     .
 
-% minimax_ab avec alpha-beta
+% minimax_ab_opti avec alpha-beta
 % D = profondeur, B = plateau, M = joueur, S = coup, U = utilité
 % Alpha = meilleure valeur pour Max, Beta = meilleure valeur pour Min
 
 % VÉRIFICATION PRÉCOCE : Si quelqu'un a gagné, arrêter immédiatement
-minimax_ab(D, B, M, S, U, Alpha, Beta) :-
+minimax_ab_opti(D, B, M, S, U, Alpha, Beta) :-
     (win(B, 'x') ; win(B, 'o')),   %%% Si victoire détectée
     !,
     utility(B, U)                   %%% Retourner l'utilité immédiatement
     .
 
-minimax_ab(D, B, M, S, U, Alpha, Beta) :-
-    maxdepth(MaxDepth),
+minimax_ab_opti(D, B, M, S, U, Alpha, Beta) :-
+    maxdepth(minimax_ab_opti, MaxDepth),
     D < MaxDepth,              %%% limit the depth of the search to avoid long computation times
     moves(B, L),               %%% get the list of available moves
     L \= [],                   %%% if there are available moves,
@@ -46,9 +46,9 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
     .
 
 % if there are no more available moves, 
-% then the minimax_ab value is the utility of the given board position
+% then the minimax_ab_opti value is the utility of the given board position
 
-minimax_ab(D, B, M, S, U, Alpha, Beta) :-
+minimax_ab_opti(D, B, M, S, U, Alpha, Beta) :-
     utility(B, U)    
     .
 
@@ -56,7 +56,7 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
 %.......................................
 % best_ab avec alpha-beta pruning
 %.......................................
-% determines the best_ab move in a given list of moves by recursively calling minimax_ab
+% determines the best_ab move in a given list of moves by recursively calling minimax_ab_opti
 %
 
 % if there is only one move left in the list...
@@ -64,7 +64,7 @@ minimax_ab(D, B, M, S, U, Alpha, Beta) :-
 best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),        %%% apply that move to the board,
     inverse_mark(M,M2),   
-    minimax_ab(D, B2,M2,_S,U, Alpha, Beta),  %%% then recursively search for the utility value of that move.
+    minimax_ab_opti(D, B2,M2,_S,U, Alpha, Beta),  %%% then recursively search for the utility value of that move.
     S = S1, !
     .
 
@@ -85,7 +85,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
 best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     move(B,S1,M,B2),             %%% apply the first move (in the list) to the board,
     inverse_mark(M,M2), 
-    minimax_ab(D,B2,M2,_S,U1, Alpha, Beta),      %%% recursively search for the utility value of that move,
+    minimax_ab_opti(D,B2,M2,_S,U1, Alpha, Beta),      %%% recursively search for the utility value of that move,
     
     % algorithme alpha-beta
     (maximizing(M) ->
@@ -116,68 +116,7 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
         )
     ), !
     .
-
-
-%.......................................
-% better
-%.......................................
-% returns the better of two moves based on their respective utility values.
-%
-% if both moves have the same utility value, then one is chosen at random.
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    maximizing(M),                     %%% if the player is maximizing
-    U1 > U2,                           %%% then greater is better.
-    S = S1,
-    U = U1,
-    write('MAXIMIZING Comparing U1 and U2 :'), write(U1), write(' vs '), write(U2), nl,
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    minimizing(M),                     %%% if the player is minimizing,
-    U1 < U2,                           %%% then lesser is better.
-    S = S1,
-    U = U1, 
-    write('MINIMIZING Comparing U1 and U2 :'), write(U1), write(' vs '), write(U2), nl,
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-
-    U1 == U2,                          %%% if moves have equal utility,
-    random_int_1n(10,R),               %%% then pick one of them at random
-    better2(D,R,M,S1,U1,S2,U2,S,U),    
-    write('EQUAL Comparing U1 and U2 :'), write(U1), write(' vs '), write(U2), nl
-    !
-    .
-
-better(D,M,S1,U1,S2,U2,     S,U) :-        %%% otherwise, second move is better
-    S = S2,
-    U = U2,
-    write('OTHERWISE Comparing U1 and U2 :'), write(U1), write(' vs '), write(U2), nl,
-    !
-    .
-
-
-%.......................................
-% better2
-%.......................................
-% randomly selects two squares of the same utility value given a single probability
-%
-
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
-    R < 6,
-    S = S1,
-    U = U1, 
-    !
-    .
-
-better2(D,R,M,S1,U1,S2,U2,  S,U) :-
-    S = S2,
-    U = U2,
-    !
-    . 
-
+     
 %.......................................
 % heuristique pour parcourir les branches de façon plus optimisée
 %.......................................
@@ -338,33 +277,5 @@ score_from_count(Total, Score) :-
 
 score_from_count(_, 0).              % 0 : impossible normalement
 
-%.......................................
-% utility - Évalue le plateau complet
-%.......................................
 
-utility(B, U) :-
-    win(B, 'x'),
-    U = 100000, !
-    .
-
-utility(B, U) :-
-    win(B, 'o'),
-    U = (-100000), !
-    .
-
-utility(B, U) :-
-    % somme tous les scores du board pour donner l'utility
-    aggregate_all(sum(ScoreVal), 
-        (between(1, 7, Col),
-         between(1, 6, Row),
-         get_item(B, Col, Column),
-         get_item(Column, Row, V),
-         calculate_score(B, Col, Row, V, S1),
-         center_bonus(Col, CenterBonus),
-         % Ajouter le bonus de position centrale à chaque pièce
-         (V == 'x' -> ScoreVal is S1 + CenterBonus ; 
-          V == 'o' -> ScoreVal is -(S1 + CenterBonus) ; 
-          ScoreVal = 0)),
-        U)
-        . 
 
