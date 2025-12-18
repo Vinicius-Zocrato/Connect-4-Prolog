@@ -94,7 +94,7 @@ best_ab_opti(D,B,M,[S1|T],S,U, Alpha, Beta) :-
         (NewAlpha >= Beta ->
             % Coupure beta : on retourne immédiatement
             S = S1,
-            U = NewAlpha,
+            U = NewAlpha
         ;
             % Pas de coupure : on continue avec les autres mouvements
             best_ab_opti(D,B,M,T,S2,U2, NewAlpha, Beta),
@@ -106,7 +106,7 @@ best_ab_opti(D,B,M,[S1|T],S,U, Alpha, Beta) :-
         (Alpha >= NewBeta ->
             % Coupure alpha : on retourne immédiatement
             S = S1,
-            U = NewBeta,
+            U = NewBeta
         ;
             % Pas de coupure : on continue avec les autres mouvements
             best_ab_opti(D,B,M,T,S2,U2, Alpha, NewBeta),
