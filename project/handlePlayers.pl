@@ -8,7 +8,7 @@ read_players :-
 
 set_AIType(Player, AIType):-
     retractall(maxdepth(AIType,_)),
-    %retractall(player(Player,_)),
+    retractall(player(Player,_)),
     allAI(AllAITypes),
     member(AIType,AllAITypes),
     ((AIType == random ; AIType == blockWinning); 
