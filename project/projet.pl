@@ -70,7 +70,7 @@ asserta( player(P, Type) ) - indicates which players are human/computer.
 :- include('handlePlayers.pl').
 :- include('minimaxAI_alphabeta.pl').
 
-:- asserta( allAI([random, blockWinning, minimax, minimax_ab]) ).
+:- asserta( allAI([random, blockWinning, minimax, minimax_scoring, minimax_ab, minimax_ab_opti]) ).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%     FACTS

@@ -81,10 +81,27 @@ make_move2(minimax, Player, Board, B2, Move) :-
     write('.'),
     nl.
 
-make_move2([minimax_ab, Depth], Player, Board, B2, Move) :-
+make_move2(minimax_scoring, Player, Board, B2, Move) :-
     nl,
     nl,
-    write('Computer is thinking (Alpha-Beta)...'),
+    write('Min-max AI is thinking about next move...'),
+    player_mark(Player, Mark),
+    %utility(Board, Utility),
+    minimax_scoring(0, Board,Mark,Move,Utility),
+    move(Board,Move,Mark,B2),
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.'),
+    nl.
+
+make_move2(minimax_ab, Player, Board, B2, Move) :-
+    nl,
+    nl,
+    write('Alpha-Beta is thinking about next move...'),
     player_mark(Player, Mark),
     minimax_ab(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
     move(Board, Move, Mark, B2),
@@ -97,6 +114,21 @@ make_move2([minimax_ab, Depth], Player, Board, B2, Move) :-
     write('.'),
     nl.
 
+make_move2(minimax_ab_opti, Player, Board, B2, Move) :-
+    nl,
+    nl,
+    write('Alpha-Beta is thinking about next move...'),
+    player_mark(Player, Mark),
+    minimax_ab_opti(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
+    move(Board, Move, Mark, B2),
+    nl,
+    nl,
+    write('Computer places '),
+    write(Mark),
+    write(' in column '),
+    write(Move),
+    write('.'),
+    nl.
 
 % moves(+Board, -ValidColumns)
 moves(Board, ValidColumns) :-

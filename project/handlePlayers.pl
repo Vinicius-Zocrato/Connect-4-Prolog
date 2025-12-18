@@ -11,10 +11,11 @@ set_AIType(Player, AIType):-
     %retractall(player(Player,_)),
     allAI(AllAITypes),
     member(AIType,AllAITypes),
-    (not(AIType==minimax; AIType==minimax_ab), AIFullType = AIType; 
-    write('What depth ?'), read(Depth), AIFullType = [AIType, Depth]),
-    asserta( maxdepth(Depth)),
-    asserta( player(Player, AIFullType) ), !.
+    ((AIType == random ; AIType == blockWinning); 
+    write('What depth ?'), read(Depth)),
+    asserta( maxdepth(AIType, Depth)),
+    asserta( player(Player, AIType) ), !.
+
 
 set_AIType(Player, AIType):-
     allAI(AllAITypes),
