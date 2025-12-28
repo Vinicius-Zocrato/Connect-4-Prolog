@@ -66,6 +66,7 @@ best_ab(D,B,M,[S1],S,U, Alpha, Beta) :-
     minimax_ab(D, B2,M2,_S,U, Alpha, Beta),  %%% then recursively search for the utility value of that move.
     S = S1, !
     .
+    
 
 % if there is more than one move in the list...
 % OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
@@ -77,6 +78,15 @@ best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     S = S1,
     utility(B2, U)            %%% Retourner le score de victoire avec profondeur
     .
+
+best_ab(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+    inverse_mark(M,M2),
+    move(B,S1,M2,B2),
+    win(B2, M2),                  %%% Si CE coup me fait gagner immédiatement
+    !,                           %%% Pas besoin de chercher plus loin
+    S = S1,
+    (M == 'x' -> U = 100000; M == 'o' -> U = -100000 )  .         %%% Retourner le score de victoire avec profondeur
+   
 
 % if there is more than one move in the list...
 % Implémentation de l'élagage alpha-beta
