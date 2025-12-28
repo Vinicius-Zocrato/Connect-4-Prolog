@@ -71,8 +71,7 @@ make_move2(minimax, Player, Board, B2, Move) :-
     write('Minimax AI is thinking about next move... | depth : '),
     write(Depth), nl,
     player_mark(Player, Mark),
-    %utility(Board, Utility),
-    minimax(0, Board,Mark,Move,Utility),
+    minimax(0, Board,Mark,Move,_),
     move(Board,Move,Mark,B2),
     nl,
     nl,
@@ -91,7 +90,7 @@ make_move2(minimax_scoring, Player, Board, B2, Move) :-
     write(Depth), nl,
     player_mark(Player, Mark),
     %utility(Board, Utility),
-    minimax_scoring(0, Board,Mark,Move,Utility),
+    minimax_scoring(0, Board,Mark,Move,_),
     move(Board,Move,Mark,B2),
     nl,
     nl,
@@ -109,7 +108,7 @@ make_move2(minimax_ab, Player, Board, B2, Move) :-
     write('Alpha-Beta AI is thinking about next move... | depth : '),
     write(Depth), nl,
     player_mark(Player, Mark),
-    minimax_ab(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
+    minimax_ab(0, Board, Mark, Move, _, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
     move(Board, Move, Mark, B2),
     nl,
     nl,
@@ -127,7 +126,7 @@ make_move2(minimax_ab_opti, Player, Board, B2, Move) :-
     write('Alpha-Beta opti AI is thinking about next move... | depth : '),
     write(Depth), nl,
     player_mark(Player, Mark),
-    minimax_ab_opti(0, Board, Mark, Move, Utility, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
+    minimax_ab_opti(0, Board, Mark, Move, _, -10000000, 10000000),  % Alpha=-10000000, Beta=+10000000
     move(Board, Move, Mark, B2),
     nl,
     nl,

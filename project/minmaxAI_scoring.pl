@@ -8,7 +8,7 @@
 % Save the user the trouble of waiting  for the computer to search the entire minimax_scoring tree 
 % by simply selecting a random square.
 
-minimax_scoring(D, [
+minimax_scoring(_, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
@@ -16,7 +16,7 @@ minimax_scoring(D, [
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E], 
         [E,E,E,E,E,E]
-    ],M,S,U) :-   
+    ],_,S,U) :-   
     blank_mark(E),
     U = 0,
     S = 4,
@@ -37,7 +37,7 @@ minimax_scoring(D, B, M, S, U) :-
 % if there are no more available moves, 
 % then the minimax_scoring value is the utility of the given board position
 
-minimax_scoring(D, B, M, S, U) :-
+minimax_scoring(_, B, _, S, U) :-
     utility(B, U),
     S = 0, !
     .
@@ -62,13 +62,12 @@ best_scoring(D,B,M,[S1],S,U) :-
 % if there is more than one move in the list...
 % OPTIMISATION : Vérifier d'abord si un coup mène à une victoire immédiate
 
-best_scoring(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+best_scoring(_,B,M,[S1|_],S,U) :-
     move(B,S1,M,B2),
     win(B2, M),                  %%% Si CE coup me fait gagner immédiatement
     !,                           %%% Pas besoin de chercher plus loin
     S = S1,
-    utility(B2, U)   .         %%% Retourner le score de victoire avec profondeur
-  
+    utility(B2, U).            %%% Retourner le score de victoire avec profondeur
         
 best_scoring(D,B,M,[S1|T],S,U, Alpha, Beta) :-
     inverse_mark_mark(M,M2),
