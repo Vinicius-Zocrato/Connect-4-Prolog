@@ -364,7 +364,7 @@ test(utility_x_wins) :-
         ['e','e','e','e','e','e']
     ],
     utility(Board, U),
-    U == 10000.
+    U == 100000.
 
 % ============================================
 % TEST 2: O gagne - devrait retourner -10000
@@ -380,7 +380,7 @@ test(utility_o_wins) :-
         ['e','e','e','e','e','e']
     ],
     utility(Board, U),
-    U == -10000.
+    U == -100000.
 
 % ============================================
 % TEST 3: Board vide - devrait retourner 0
