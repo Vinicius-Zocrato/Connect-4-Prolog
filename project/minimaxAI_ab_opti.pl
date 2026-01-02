@@ -79,7 +79,7 @@ best_ab_opti(_,B,M,[S1|_],S,U, _, _) :-
     utility(B2, U)            %%% Retourner le score de victoire
     .
 
-best_ab_opti(D,B,M,[S1|T],S,U, Alpha, Beta) :-
+best_ab_opti(_,B,M,[S1|_],S,U, _, _) :-
     inverse_mark(M,M2),
     move(B,S1,M2,B2),
     win(B2, M2),                  %%% Si CE coup fait gagner l'adversaire immédiatement
