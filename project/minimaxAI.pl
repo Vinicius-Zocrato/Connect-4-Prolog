@@ -68,7 +68,7 @@ best(_,B,M,[S1|_],S,U) :-
     S = S1,
     utility(B2, U) .           %%% Retourner le score de victoire avec profondeur
 
-best(_,B,M,[S1|_],S,U, _, _) :-
+best(_,B,M,[S1|_],S,U) :-
     inverse_mark(M,M2),
     move(B,S1,M2,B2),
     win(B2, M2),                  %%% Si CE coup me fait gagner immédiatement
